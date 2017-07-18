@@ -2,16 +2,20 @@ package model.java;
 
 import core.CodeMaker;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by creep on 2017/7/9.
  */
 public class JavaClass extends Feature implements CodeMaker {
+
     private List<Field> fields;
     private List<Method> methods;
+    private Set<Imported> importedSet=new HashSet<Imported>();
     private JavaPackage javaPackage;
-    private Imported imported;
     private String className;
 
     public List<Field> getFields() {
@@ -38,12 +42,12 @@ public class JavaClass extends Feature implements CodeMaker {
         this.javaPackage = javaPackage;
     }
 
-    public Imported getImported() {
-        return imported;
+    public Set<Imported> getImportedSet() {
+        return importedSet;
     }
 
-    public void setImported(Imported imported) {
-        this.imported = imported;
+    public void setImportedSet(Set<Imported> importedSet) {
+        this.importedSet = importedSet;
     }
 
     public String getClassName() {
@@ -57,6 +61,18 @@ public class JavaClass extends Feature implements CodeMaker {
     public String getFormattedContent() {
         StringBuffer sb =new StringBuffer();
 
+        // …Ë÷√ package
+        sb.append(javaPackage.getFormattedContent());
+        sb.append("\n");
+
+        // µº∞¸
+        if(importedSet!=null&&importedSet.size()!=0){
+            for (Imported imported:importedSet) {
+                sb.append(imported.getFormattedContent());
+                sb.append("\n");
+            }
+        }
+
         sb.append(getComment().getFormattedContent());
 
         sb.append(getVisibility().getValue());
@@ -67,11 +83,12 @@ public class JavaClass extends Feature implements CodeMaker {
         if(isFinal()){
             sb.append("final ");
         }
-        sb.append(" class ");
+        sb.append("class ");
         sb.append(className);
         sb.append(" {");
         sb.append("\n");
         for(Field field:fields){
+
             sb.append(field.getComment().getFormattedContent());
 
             sb.append(field.getFormattedContent());
@@ -79,6 +96,7 @@ public class JavaClass extends Feature implements CodeMaker {
         }
 
         for(Method method: methods){
+
             if(method.getComment()!=null){
                 sb.append(method.getComment().getFormattedContent());
             }

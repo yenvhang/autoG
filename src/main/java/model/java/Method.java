@@ -2,6 +2,8 @@ package model.java;
 
 import core.CodeMaker;
 
+import java.util.List;
+
 /**
  * Created by creep on 2017/7/8.
  */
@@ -10,7 +12,7 @@ public class Method extends Feature implements CodeMaker {
     private String methodName;
     private JavaType returnType;
     private String methodBody;
-
+    private List<Parameter> parameters;
     public Method(){}
 
     public Method(JavaVisibility javaVisibility,String methodName, JavaType returnType, String methodBody) {
@@ -18,6 +20,14 @@ public class Method extends Feature implements CodeMaker {
         this.methodName = methodName;
         this.returnType = returnType;
         this.methodBody = methodBody;
+    }
+
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
     }
 
     public boolean isConstructor() {
@@ -71,7 +81,19 @@ public class Method extends Feature implements CodeMaker {
             }
         }
         sb.append(methodName);
-        sb.append("()");
+        sb.append("(");
+        boolean first=true;
+        if(parameters!=null&&parameters.size()!=0){
+            for(Parameter parameter:parameters){
+                if(!first){
+                    sb.append(",");
+                }
+                sb.append(parameter.getFormattedContent());
+                first=false;
+
+            }
+        }
+        sb.append(")");
         sb.append(" {");
         sb.append("\n");
         sb.append(methodBody);

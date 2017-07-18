@@ -11,8 +11,13 @@ public class JavaPackage implements CodeMaker {
         StringBuffer sb =new StringBuffer();
         sb.append("package ");
         sb.append(packageName);
-        sb.append("\n\n");
+        sb.append(";");
+
         return sb.toString();
+    }
+
+    public JavaPackage(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getPackageName() {
