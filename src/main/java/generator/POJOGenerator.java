@@ -4,7 +4,6 @@ import core.Context;
 import model.db.Column;
 import model.db.Table;
 import model.*;
-import model.java.*;
 import util.BaseUtil;
 
 import java.util.ArrayList;
