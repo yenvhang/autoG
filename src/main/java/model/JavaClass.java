@@ -1,9 +1,8 @@
-package model.java;
+package model;
 
 import core.CodeMaker;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -13,10 +12,10 @@ import java.util.Set;
 public class JavaClass extends Feature implements CodeMaker {
 
     private List<Field> fields;
-    private List<Method> methods;
-    private Set<Imported> importedSet=new HashSet<Imported>();
-    private JavaPackage javaPackage;
-    private String className;
+	private List<Method> methods;
+	private Set<Imported> importedSet=new HashSet<Imported>();
+	private JavaPackage javaPackage;
+	private String className;
 
     public List<Field> getFields() {
         return fields;

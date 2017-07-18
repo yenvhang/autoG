@@ -1,5 +1,6 @@
-import core.db.Table;
-import model.java.JavaClass;
+import core.Context;
+import model.db.Table;
+import model.JavaClass;
 
 import java.util.List;
 

@@ -1,5 +1,7 @@
-package core.db;
+package model.db;
 
+
+import configuration.TableConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,16 @@ public class Table {
 	private String tableName;
 	private String comment;
 	private List<Column> columnList =new ArrayList<Column>();
+	private TableConfiguration tableConfiguration;
+
+	public TableConfiguration getTableConfiguration() {
+		return tableConfiguration;
+	}
+
+	public void setTableConfiguration(TableConfiguration tableConfiguration) {
+		this.tableConfiguration = tableConfiguration;
+	}
+
 	public String getTableName() {
 		return tableName;
 	}

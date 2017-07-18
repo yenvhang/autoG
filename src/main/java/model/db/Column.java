@@ -1,4 +1,4 @@
-package core.db;
+package model.db;
 
 /**
  * Created by creep on 2017/7/8.

@@ -1,4 +1,4 @@
-package core;
+package generator;
 
 /** 为方法 字段 类生成注释
  * Created by creep on 2017/7/8.

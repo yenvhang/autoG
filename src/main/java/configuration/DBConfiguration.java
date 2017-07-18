@@ -1,7 +1,9 @@
+package configuration;
+
 /**
  * Created by yeyh on 2017/7/7.
  */
-public class Config {
+public class DBConfiguration {
 
 	private String beanPackage;
 	private String daoPackage;
