@@ -1,4 +1,5 @@
 import core.Context;
+import generator.POJOGenerator;
 import model.db.Table;
 import model.JavaClass;
 
@@ -11,9 +12,11 @@ public  class AutoG {
 
 	public static void main(String args[]){
 		Context context=new Context();
+		context.initConfig();
 		context.getConnnection();
 		List<Table> tables =context.introspectTables();
-		List<JavaClass> javaClassList =context.createJavaClass(tables);
+
+		List<JavaClass> javaClassList =new POJOGenerator().genJavaClass(context);
 		if(javaClassList!=null&&javaClassList.size()!=0){
 			for(JavaClass javaClass:javaClassList){
 				System.out.println(javaClass.getFormattedContent());

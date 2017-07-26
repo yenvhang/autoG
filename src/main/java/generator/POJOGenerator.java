@@ -17,7 +17,8 @@ public class POJOGenerator implements Generator{
 	public void generate() {
 
 	}
-	public List<JavaClass> genJavaClass(){
+	public List<JavaClass> genJavaClass(Context context){
+		this.context=context;
 		List<JavaClass> javaClassList = new ArrayList<JavaClass>();
 
 		for (Table table : context.getTables()) {
@@ -34,7 +35,7 @@ public class POJOGenerator implements Generator{
 				fields.add(new Field(column.getComment(),
 						JavaVisibility.PRIVATE,
 						JavaType.getJavaType(column.getColumnType(),column.getColumnLength(),javaClass.getImportedSet()),
-						BaseUtil.getCamelCaseValue(column.getColumnName())));
+						column.getFieldName()));
 			}
 			//加入get set 方法
 			List<Method> methods = new ArrayList<Method>();

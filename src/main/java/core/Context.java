@@ -5,7 +5,7 @@ import model.db.Column;
 import configuration.DBConfiguration;
 import model.db.Table;
 import model.JavaClass;
-import model.java.*;
+
 
 
 import java.sql.*;
@@ -23,7 +23,9 @@ public class Context {
 	List<Table> tables;
 
 	private List<TableConfiguration> tableConfigurations=new ArrayList<TableConfiguration>();
-
+	public void initConfig(){
+		tableConfigurations.add(new TableConfiguration());
+	}
 	public void getConnnection() {
 		try {
 			Class.forName(config.getDriverClassName());
@@ -32,6 +34,7 @@ public class Context {
 			props.put("password", config.getPassword());
 			props.put("remarksReporting", "true");
 			connection = DriverManager.getConnection(config.getUrl(), props);
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -47,10 +50,10 @@ public class Context {
 		List<Table> tables = new ArrayList<Table>();
 		try {
 			for(TableConfiguration tableConfiguration:tableConfigurations){
-
 				Table table=new Table();
 				tables.add(table);
 				table.setTableConfiguration(tableConfiguration);
+
 					metaData = connection.getMetaData();
 					tableResultset = metaData.getTables(
 							tableConfiguration.getCatalog(),
@@ -59,7 +62,6 @@ public class Context {
 							new String[]{"TABLE"});
 
 					while (tableResultset.next()) {
-						tables.add(table);
 						table.setTableName(tableResultset.getString("TABLE_NAME"));
 						table.setComment(tableResultset.getString("REMARKS"));
 						break;
@@ -78,6 +80,8 @@ public class Context {
 						column.setComment(resultSet.getString("REMARKS"));
 						column.setColumnType(resultSet.getInt("DATA_TYPE"));
 						column.setColumnLength(resultSet.getInt("COLUMN_SIZE"));
+
+						calculateExtraColumnInf(column,tableConfiguration);
 					}
 			}
 		} catch (SQLException e) {
@@ -106,6 +110,10 @@ public class Context {
 		this.tables=tables;
 		return tables;
 
+	}
+
+	private void calculateExtraColumnInf(Column column, TableConfiguration tableConfiguration) {
+		column.setFieldName(tableConfiguration.getDomainObjectName());
 	}
 
 	public List<JavaClass> createJavaClass(List<Table> tables) {

@@ -6,8 +6,22 @@ package model.db;
 public class Column {
 	private String columnName;
 	private String comment;
+
 	private int columnType;
 	private int columnLength;
+
+	/**
+	 * extra info
+	 */
+	private String fieldName;
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
 
 	public int getColumnLength() {
 		return columnLength;

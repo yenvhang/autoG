@@ -12,7 +12,7 @@ public class TableConfiguration {
 	private String catalog = null;
 	private String schemPattern = "%";
 	private String columnNamePatter = "%";
-	private String tableName;
+	private String tableName="STOCK_A_QUOTA";
 	private String packageName;
 	private String domainObjectName;
 	private static final String DEFAULT_DAO_SUFFIX="Dao";
