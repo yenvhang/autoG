@@ -9,7 +9,7 @@
         <module name="autoG" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="autoG" target="1.5" />
     </bytecodeTargetLevel>
   </component>
