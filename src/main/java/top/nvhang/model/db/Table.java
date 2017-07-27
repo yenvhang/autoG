@@ -16,7 +16,7 @@ public class Table {
 	private TableConfiguration tableConfiguration;
 
 	//extra Information
-	private String domainName;
+
 	public TableConfiguration getTableConfiguration() {
 		return tableConfiguration;
 	}
@@ -25,13 +25,7 @@ public class Table {
 		this.tableConfiguration = tableConfiguration;
 	}
 
-	public String getDomainName() {
-		return domainName;
-	}
 
-	public void setDomainName(String domainName) {
-		this.domainName = domainName;
-	}
 
 	public String getTableName() {
 		return tableName;

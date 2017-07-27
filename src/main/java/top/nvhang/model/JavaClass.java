@@ -82,7 +82,7 @@ public class JavaClass extends Feature implements CodeMaker {
         if(isFinal()){
             sb.append("final ");
         }
-        sb.append("class ");
+        sb.append("Class ");
         sb.append(className);
         sb.append(" {");
         sb.append("\n");

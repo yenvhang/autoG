@@ -21,8 +21,6 @@ public class BaseUtil {
 				upperCaseToLowerCase = true;
 			}
 			sb.append(c);
-
-
 		}
 
 		return sb.toString();
@@ -49,5 +47,25 @@ public class BaseUtil {
 		}
 		return sb.toString();
 
+	}
+	public static String getCamelCaseValueStartWithUpper(String value){
+		boolean upperCaseToLowerCase = false;
+		StringBuilder sb = new StringBuilder();
+		for (char c : value.toCharArray()) {
+
+			if (c == '_') {
+				upperCaseToLowerCase = false;
+				continue;
+			}
+			if (upperCaseToLowerCase) {
+				c = (char) (c - ('A' - 'a'));
+			} else {
+				upperCaseToLowerCase = true;
+			}
+			sb.append(c);
+
+
+		}
+		return sb.toString();
 	}
 }

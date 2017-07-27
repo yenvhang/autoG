@@ -1,5 +1,6 @@
 package top.nvhang.core;
 
+import org.springframework.beans.BeanUtils;
 import top.nvhang.configuration.DBConfiguration;
 import top.nvhang.configuration.TableConfiguration;
 import top.nvhang.model.JavaClass;
@@ -75,7 +76,7 @@ public class Context implements InitializingBean {
 					while (tableResultset.next()) {
 						table.setTableName(tableResultset.getString("TABLE_NAME"));
 						table.setComment(tableResultset.getString("REMARKS"));
-						table.setDomainName(tableConfiguration.getDomainObjectName());
+
 						break;
 					}
 

@@ -13,8 +13,9 @@ public class TableConfiguration {
 	private String schemPattern = "%";
 	private String columnNamePatter = "%";
 	private String tableName="STOCK_A_QUOTA";
-	private String packageName;
+	private String packageName="top.nvhang";
 	private String domainObjectName;
+	private String domainObjectQueryName;
 	private static final String DEFAULT_DAO_SUFFIX="Dao";
 	private static final String DEFAULT_DAO_IMPL_SUFFIX="DaoImpl";
 	private static final String DEFAULT_MAPPER_SUFFIX="_sqlMap";
@@ -68,6 +69,8 @@ public class TableConfiguration {
 	 */
 	private String nameSpace;
 
+	private String className;
+
 
 	public String getCatalog() {
 		return catalog;
@@ -109,12 +112,36 @@ public class TableConfiguration {
 		this.packageName = packageName;
 	}
 
+	public void setClassName(String className) {
+		this.className = className;
+	}
+	public void setDomainObjectQueryName(String domainObjectQueryName) {
+		this.domainObjectQueryName = domainObjectQueryName;
+	}
+
+	public String getDomainObjectQueryName() {
+		if(StringUtils.isBlank(domainObjectQueryName)){
+			return getDomainObjectName()+"Query";
+		}
+		return domainObjectQueryName;
+	}
+
+
+
+	public String getClassName() {
+		if(StringUtils.isBlank(className)){
+			return BaseUtil.getCamelCaseValueStartWithUpper(tableName);
+		}
+		return className;
+	}
 	public String getServiceName() {
 		if(StringUtils.isBlank(serviceName)){
 			return domainObjectName+getServiceSuffix();
 		}
 		return serviceName;
 	}
+
+
 
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;

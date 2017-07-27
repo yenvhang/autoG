@@ -34,7 +34,7 @@ public class JavaType {
             return StringInstance;
         }
         if(type==93){
-            sets.add(new Imported("java.top.nvhang.util.Date"));
+            sets.add(new Imported("java.util.Date"));
             return dateInstance;
 
         }

@@ -29,7 +29,7 @@ public class POJOGenerator implements Generator{
 			javaClassList.add(javaClass);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getPackageName()));
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
-			javaClass.setClassName(table.getTableConfiguration().getDomainObjectName());
+			javaClass.setClassName(table.getTableConfiguration().getClassName());
 			javaClass.setComment(new Comment(table.getComment()));
 			List<Field> fields = new ArrayList<Field>();
 			javaClass.setFields(fields);
