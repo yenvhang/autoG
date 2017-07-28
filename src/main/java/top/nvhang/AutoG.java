@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
 import top.nvhang.generator.IbatisDAOGenerator;
+import top.nvhang.generator.ManagerGenerator;
 import top.nvhang.generator.POJOGenerator;
 import top.nvhang.generator.SqlMapGenerator;
 import top.nvhang.model.JavaClass;
@@ -25,7 +26,8 @@ public  class AutoG {
 	private POJOGenerator pojoGenerator;
 	@Autowired
 	private IbatisDAOGenerator ibatisDAOGenerator;
-
+	@Autowired
+	private ManagerGenerator managerGenerator;
 
 
 	public void start(){
@@ -35,6 +37,7 @@ public  class AutoG {
 		pojoGenerator.generate();
 		sqlMapGenerator.generate();
 		ibatisDAOGenerator.generate();
+		managerGenerator.generate();
 
 
 	}

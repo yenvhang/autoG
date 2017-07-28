@@ -219,7 +219,7 @@ public class TableConfiguration {
 	}
 	public String getServiceName() {
 		if(StringUtils.isBlank(serviceName)){
-			return domainObjectName+getServiceSuffix();
+			return getClassName()+getServiceSuffix();
 		}
 		return serviceName;
 	}
@@ -241,7 +241,7 @@ public class TableConfiguration {
 
 	public String getServiceImplName() {
 		if(StringUtils.isBlank(serviceImplName)){
-			return domainObjectName+getServiceImplSuffix();
+			return getClassName()+getServiceImplSuffix();
 		}
 		return serviceImplName;
 	}

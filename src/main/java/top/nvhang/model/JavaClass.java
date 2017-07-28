@@ -157,4 +157,10 @@ public class JavaClass extends Feature implements CodeMaker {
 		}
 		methods.add(method);
 	}
+	public void addInterface(Interface interFace){
+    	if(interfaceList==null){
+    		interfaceList=new ArrayList<Interface>();
+		}
+		interfaceList.add(interFace);
+	}
 }
