@@ -6,18 +6,26 @@ import top.nvhang.model.db.Column;
 import top.nvhang.model.db.Table;
 import top.nvhang.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import top.nvhang.util.BaseUtil;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/7/18.
+ * Created by yeyh on 2017/7/18.
  */
 @Component
 public class POJOGenerator implements Generator{
 	@Autowired
 	private Context context;
 	public void generate() {
+		List<JavaClass> javaClassList =genJavaClass();
+		for(JavaClass javaClass:javaClassList){
+			BaseUtil.write(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+		}
 
 	}
 	public List<JavaClass> genJavaClass(){
@@ -47,8 +55,18 @@ public class POJOGenerator implements Generator{
 				methods.add(getJavaBeanGetter(field));
 				methods.add(getJavaBeanSetter(field));
 			}
+			genExtraJavaClass(javaClassList,table);
 		}
 		return javaClassList;
+	}
+
+	private void genExtraJavaClass(List<JavaClass> javaClassList, Table table) {
+		JavaClass javaClass=new JavaClass();
+		javaClassList.add(javaClass);
+		javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getPackageName()+".query"));
+		javaClass.setVisibility(JavaVisibility.PUBLIC);
+		javaClass.setClassName(table.getTableConfiguration().getClassName()+"Query");
+		javaClass.setSuperClass("Pagination<"+table.getTableConfiguration().getClassName()+">");
 	}
 
 	public Method getJavaBeanGetter(Field field) {
@@ -113,6 +131,7 @@ public class POJOGenerator implements Generator{
 		sb.append(field.getFieldName());
 		sb.append("=");
 		sb.append(field.getFieldName());
+		sb.append(";");
 		return sb.toString();
 	}
 }

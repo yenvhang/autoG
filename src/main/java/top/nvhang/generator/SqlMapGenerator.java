@@ -81,7 +81,7 @@ public class SqlMapGenerator implements Generator {
 
 	private void addSelectCountElement(Element root, Table table) {
 		Element element=root.addElement("SELECT");
-		element.addAttribute("id","selectCount");
+		element.addAttribute("id",table.getTableConfiguration().getSelectCountSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 		element.setText("SELECT COUNT(1) \n"+
@@ -100,27 +100,102 @@ public class SqlMapGenerator implements Generator {
 	}
 
 	private void addDeleteElement(Element root,Table table) {
+		Element element=root.addElement("DELETE");
+		element.addAttribute("id",table.getTableConfiguration().getDeleteObjectSqlId());
+		element.addAttribute(PARAMETER_CLASS_ATR,"long");
+		element.setText("DELETE FROM "+table.getTableConfiguration().getTableName()+" WHERE ID="+"#id#");
 	}
 
 	private void addUpdateElement(Element root,Table table) {
+		Element element=root.addElement("UPDATE");
+		element.addAttribute("id",table.getTableConfiguration().getUpdateObjectSqlId());
+		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
+		StringBuilder sb =new StringBuilder();
+		for(Column column:table.getColumnList()){
+			sb.append("<isNotNull prepend=\",\" property=\""+column.getFieldName()+"\">"+
+					column.getColumnName()+"=#"+column.getFieldName()+"#"+
+					"</isNotNull>");
+		}
+		element.setText("UPDATE  "+table.getTableConfiguration().getTableName()+
+			"<dynamic prepend=\"SET\">"+
+			sb.toString()+
+			"</dynamic>");
 	}
 
 	private void addInsertElement(Element root,Table table) {
+		Element element =root.addElement("INSERT");
+		element.addAttribute("id",table.getTableConfiguration().getInsertObjectSqlId());
+		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
+		StringBuilder sb =new StringBuilder();
+		StringBuilder sb2=new StringBuilder();
+		for(Column column:table.getColumnList()){
+			sb.append(column.getColumnName());
+			sb2.append("#"+column.getFieldName()+"#");
+			sb.append(",");
+			sb2.append(",");
+			sb.append("\n");
+			sb2.append("\n");
+		}
+
+		String temp=sb.toString().trim();
+		String temp2=sb2.toString().trim();
+		if(temp.lastIndexOf(",")==temp.length()-1){
+			sb.deleteCharAt(sb.lastIndexOf(","));
+		}
+		if(temp2.lastIndexOf(",")==temp2.length()-1){
+			sb2.deleteCharAt(sb2.lastIndexOf(","));
+		}
+
+		element.setText("INSERT INTO "+
+		table.getTableConfiguration().getClassName()+
+		"(" +
+			sb.toString()+
+		")"+
+				"VALUES(" +
+				sb2.toString()+
+				")");
 	}
 
 	private void addQueryListPaingElement(Element root,Table table) {
+		Element element=root.addElement("SELECT");
+		element.addAttribute("id",table.getTableConfiguration().getQueryPageableListSqlId());
+		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
+		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
+		element.addText("<include refid=\"pageBeginSql\"/>");
+		element.addText("SELECT <include refid=\"all_columns\"/>"+
+		"FROM "+
+		table.getTableConfiguration().getTableName()+
+		"<dynamic prepend=\"WHERE\">\n" +
+
+				"<isNotEmpty property=\"\" prepend=\"AND\"> " +
+				"</isNotEmpty>" +
+				"</dynamic>");
+		element.addText("<include refid=\"pageEndSql\"/>");
 	}
 
 	private void addQueryListElement(Element root,Table table) {
+		Element element=root.addElement("SELECT");
+		element.addAttribute("id",table.getTableConfiguration().getQueryListSqlId());
+		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
+		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
+
+		element.addText("SELECT <include refid=\"all_columns\"/>"+
+				"FROM "+
+				table.getTableConfiguration().getTableName()+
+				"<dynamic prepend=\"WHERE\">\n" +
+
+				"<isNotEmpty property=\"\" prepend=\"AND\"> \n" +
+				"</isNotEmpty>" +
+				"</dynamic>");
 	}
 
 	private void addSelectUsingIdElement(Element root,Table table) {
 		Element element=root.addElement("SELECT");
-		element.addAttribute("id","select"+table.getTableConfiguration().getClassName()+"UsingId");
+		element.addAttribute("id",table.getTableConfiguration().getSelectUsingIdSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,"long");
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 		element.setText("SELECT \n"+
-				"<include refid=\"all_cloumns\"/>" +
+				"<include refid=\"all_columns\"/>" +
 				"FROM \n"+
 				table.getTableConfiguration().getTableName()+"\n"+
 				"WHERE \n"+
@@ -169,7 +244,7 @@ public class SqlMapGenerator implements Generator {
 
 	private void addColumnsElement(Element root,Table table) {
 		Element element =root.addElement("sql");
-		element.addAttribute("id","all_cloumns");
+		element.addAttribute("id","all_columns");
 		StringBuilder sb =new StringBuilder();
 		for(Column column:table.getColumnList()){
 			sb.append(column.getPrefix());

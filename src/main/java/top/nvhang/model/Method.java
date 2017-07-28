@@ -2,6 +2,7 @@ package top.nvhang.model;
 
 import top.nvhang.core.CodeMaker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,7 @@ public class Method extends Feature implements CodeMaker {
     private JavaType returnType;
     private String methodBody;
     private List<Parameter> parameters;
+    private boolean isAbstract;
     public Method(){}
 
     public Method(JavaVisibility javaVisibility,String methodName, JavaType returnType, String methodBody) {
@@ -22,7 +24,15 @@ public class Method extends Feature implements CodeMaker {
         this.methodBody = methodBody;
     }
 
-    public List<Parameter> getParameters() {
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean anAbstract) {
+		isAbstract = anAbstract;
+	}
+
+	public List<Parameter> getParameters() {
         return parameters;
     }
 
@@ -94,11 +104,24 @@ public class Method extends Feature implements CodeMaker {
             }
         }
         sb.append(")");
-        sb.append(" {");
-        sb.append("\n");
-        sb.append(methodBody);
-        sb.append("\n");
-        sb.append("}");
+        if(isAbstract){
+        	sb.append(";");
+		}
+        if(!isAbstract){
+			sb.append(" {");
+			sb.append("\n");
+			sb.append(methodBody);
+			sb.append("\n");
+			sb.append("}");
+		}
+
+
         return sb.toString();
     }
+    public void addParameter(Parameter parameter){
+    	if(parameters==null){
+    		parameters=new ArrayList<Parameter>();
+		}
+		parameters.add(parameter);
+	}
 }

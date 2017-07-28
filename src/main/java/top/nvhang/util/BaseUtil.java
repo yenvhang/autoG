@@ -1,5 +1,8 @@
 package top.nvhang.util;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * Created by yeyh on 2017/7/18.
  */
@@ -67,5 +70,26 @@ public class BaseUtil {
 
 		}
 		return sb.toString();
+	}
+	public static void write(String value,String targetPath,String fileName){
+		FileWriter writer = null;
+		try {
+			writer =new FileWriter(targetPath+fileName);
+			writer.write(value);
+			writer.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(writer!=null){
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
 	}
 }

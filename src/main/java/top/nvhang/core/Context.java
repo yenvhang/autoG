@@ -27,6 +27,7 @@ public class Context implements InitializingBean {
 	private Connection connection;
 	private DatabaseMetaData metaData;
 	List<Table> tables;
+	private String projectClassPath;
 	private List<TableConfiguration> tableConfigurations=new ArrayList<TableConfiguration>();
 
 	public void afterPropertiesSet() throws Exception {
@@ -148,6 +149,13 @@ public class Context implements InitializingBean {
 	}
 
 
+	public String getProjectClassPath() {
+		return projectClassPath;
+	}
+
+	public void setProjectClassPath(String projectClassPath) {
+		this.projectClassPath = projectClassPath;
+	}
 }
 
 

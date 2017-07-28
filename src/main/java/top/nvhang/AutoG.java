@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
+import top.nvhang.generator.IbatisDAOGenerator;
 import top.nvhang.generator.POJOGenerator;
 import top.nvhang.generator.SqlMapGenerator;
 import top.nvhang.model.JavaClass;
@@ -22,19 +23,18 @@ public  class AutoG {
 	private SqlMapGenerator sqlMapGenerator;
 	@Autowired
 	private POJOGenerator pojoGenerator;
-	@Qualifier("context")
+	@Autowired
+	private IbatisDAOGenerator ibatisDAOGenerator;
 
 
 
 	public void start(){
+
 		context.introspectTables();
-		List<JavaClass> javaClassList =pojoGenerator.genJavaClass();
-		if(javaClassList!=null&&javaClassList.size()!=0){
-			for(JavaClass javaClass:javaClassList){
-				System.out.println(javaClass.getFormattedContent());
-			}
-		}
+
+		pojoGenerator.generate();
 		sqlMapGenerator.generate();
+		ibatisDAOGenerator.generate();
 
 
 	}
