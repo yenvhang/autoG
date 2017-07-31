@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
 import top.nvhang.model.db.Column;
 import top.nvhang.model.db.Table;
+import top.nvhang.util.BaseUtil;
 import top.nvhang.util.DocumentWarpper;
 
 import java.io.File;
@@ -40,7 +41,11 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		for(DocumentWarpper warpper:documents){
 
 			try {
-				FileWriter out = new FileWriter(new File(warpper.getTargetPath(),warpper.getFileName()));
+				File file =new File(warpper.getTargetPath());
+				if(!file.exists()){
+					file.mkdirs();
+				}
+				FileWriter out = new FileWriter(new File(file,warpper.getFileName()));
 				OutputFormat format = OutputFormat.createPrettyPrint();
 				XMLWriter xw = new XMLWriter(out,format);
 				xw.setEscapeText(false);
@@ -59,7 +64,8 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		for(Table table:context.getTables()){
 			Document document=getBaseDocument();
 			documentList.add(new DocumentWarpper(document,
-					table.getTableConfiguration().getTargetPath(),
+					BaseUtil.caculateAbsolutelyPath(context.getConfig().getProjectPath(),
+							table.getTableConfiguration().getTargetPath()),
 					table.getTableConfiguration().getMapperName()));
 
 

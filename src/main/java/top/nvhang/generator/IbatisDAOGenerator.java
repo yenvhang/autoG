@@ -24,12 +24,18 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		genIbatisDAO();
 		if(interfaceList!=null&&interfaceList.size()!=0){
 			for(Interface interFace:interfaceList){
-				output(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
+				output(interFace.getFormattedContent(),
+						context.getConfig().getProjectPath(),
+						interFace.getJavaPackage().getPackageName(),
+						interFace.getInterFaceName()+".java");
 			}
 		}
 		if(daoImplClassList!=null&&daoImplClassList.size()!=0){
 			for(JavaClass javaClass:daoImplClassList){
-				output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+				output(javaClass.getFormattedContent(),
+						context.getConfig().getProjectPath(),
+						javaClass.getJavaPackage().getPackageName(),
+						javaClass.getClassName()+".java");
 			}
 		}
 

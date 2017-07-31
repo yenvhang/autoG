@@ -1,5 +1,6 @@
 package top.nvhang.util;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -74,7 +75,11 @@ public class BaseUtil {
 	public static void write(String value,String targetPath,String fileName){
 		FileWriter writer = null;
 		try {
-			writer =new FileWriter(targetPath+fileName);
+			File file =new File(targetPath);
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			writer =new FileWriter(new File(file,fileName));
 			writer.write(value);
 			writer.flush();
 
@@ -91,5 +96,10 @@ public class BaseUtil {
 			}
 
 		}
+	}
+
+	public static String caculateAbsolutelyPath(String projectPath, String packageName) {
+		return projectPath+File.separator+packageName.replaceAll("\\.","\\"+File.separator);
+
 	}
 }

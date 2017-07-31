@@ -7,14 +7,5 @@
     <context:component-scan base-package="top.nvhang"></context:component-scan>
 
     <bean id="autoG" class="top.nvhang.AutoG"></bean>
-    <!--<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="locations">
-            <list>
-                <value>f*:META-INF/spring/*.properties</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
-        <property name="properties" ref="configProperties"/>
-    </bean>-->
+
 </beans>

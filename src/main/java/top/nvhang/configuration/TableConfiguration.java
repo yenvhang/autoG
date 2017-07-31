@@ -13,53 +13,36 @@ import top.nvhang.util.BaseUtil;
  */
 @Component
 public class TableConfiguration {
-	@Value("${catalog}")
+
 	private String catalog = null;
 	private String schemPattern = "%";
 	private String columnNamePatter = "%";
-	@Value("${tableName}")
-	private String tableName="STOCK_A_QUOTA";
-	@Value("${packageName}")
-	private String packageName="top.nvhang";
-	@Value("${domainObjectName}")
+	private String tableName;
+	private String packageName;
 	private String domainObjectName;
-	@Value("${domainObjectQueryName}")
 	private String domainObjectQueryName;
-	@Value("${domainObjectQueryClassName}")
 	private String domainObjectQueryClassName;
-	@Value("${domainQueryObjectPackageName}")
 	private String domainQueryObjectPackageName;
-	@Value("${daoPackageName}")
-	private String daoPackageName="top.nvhang";
-	@Value("${managerPackageName}")
-	private String managerPackageName="top.nvhang";
-	@Value("${daoImplPackageName}")
-	private String daoImplPackageName="top.nvhang";
-	@Value("${managerImplPackageName}")
-	private String managerImplPackageName="top.nvhang";
-	@Value("${ibatisPackageName}")
-	private String ibatisPackageName="top.nvhang";
-	@Value("${targetPath}")
-	private String targetPath="";
-	@Value("${daoSuperClassName}")
-	private String daoSuperClassName="SqlMapClientDaoSupport";
-	@Value("${serviceSuperClassName}")
-	private String serviceSuperClassName="";
-	@Value("${selectUsingIdSqlId}")
-	private String selectUsingIdSqlId;
-	@Value("${queryListSqlId}")
-	private String queryListSqlId;
-	@Value("${queryPageableListSqlId}")
-	private String queryPageableListSqlId;
-	@Value("${insertObjectSqlId}")
-	private String insertObjectSqlId;
-	@Value("${updateObjectSqlId}")
-	private String updateObjectSqlId;
-	@Value("${deleteObjectSqlId}")
-	private String deleteObjectSqlId;
-	@Value("${selectCountSqlId}")
-	private String selectCountSqlId;
 
+	private String daoPackageName;
+
+	private String managerPackageName;
+
+	private String daoImplPackageName;
+
+	private String managerImplPackageName;
+
+	private String ibatisPackageName;
+	private String targetPath="top.nvhang";
+	private String daoSuperClassName="SqlMapClientDaoSupport";
+	private String serviceSuperClassName="";
+	private String selectUsingIdSqlId;
+	private String queryListSqlId;
+	private String queryPageableListSqlId;
+	private String insertObjectSqlId;
+	private String updateObjectSqlId;
+	private String deleteObjectSqlId;
+	private String selectCountSqlId;
 	private static final String DEFAULT_DAO_SUFFIX="Dao";
 	private static final String DEFAULT_DAO_IMPL_SUFFIX="DaoImpl";
 	private static final String DEFAULT_MAPPER_SUFFIX="_sqlMap";
@@ -73,53 +56,43 @@ public class TableConfiguration {
 	/**
 	 * 业务层接口名称
 	 */
-	@Value("${serviceName}")
 	private String serviceName;
 	/**
 	 * 业务层接口后缀
 	 */
-	@Value("${serviceSuffix}")
 	private String serviceSuffix;
 	/**
 	 * 业务层实现类名称
 	 */
-	@Value("${serviceImplName}")
 	private String serviceImplName;
 	/**
 	 * 业务层实现类后缀
 	 */
-	@Value("${serviceImplSuffix}")
 	private String serviceImplSuffix;
 	/**
 	 *持久层接口名称
 	 */
-	@Value("${daoName}")
 	private String daoName;
 	/**
 	 * 持久层接口后缀
 	 */
-	@Value("${schemPattern}")
 	private String daoSuffix;
 	/**
 	 * 持久层实现类 名称
 	 */
-	@Value("${daoImplName}")
 	private String daoImplName;
 	/**
 	 * 持久层实现类后缀
 	 */
-	@Value("${daoImplSuffix}")
 	private String daoImplSuffix;
 
 	/**
 	 * sql 文件名称
 	 */
-	@Value("${mapperName}")
 	private String mapperName;
 	/**
 	 * sql 文件后缀
 	 */
-	@Value("${mapperSuffix}")
 	private String mapperSuffix;
 
 
@@ -346,7 +319,7 @@ public class TableConfiguration {
 
 	public String getMapperName() {
 		if(StringUtils.isBlank(mapperName)){
-			return domainObjectName+getMapperSuffix();
+			return getDomainObjectName()+getMapperSuffix()+".xml";
 		}
 		return mapperName;
 	}

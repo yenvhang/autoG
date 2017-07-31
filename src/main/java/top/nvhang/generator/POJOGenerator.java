@@ -24,7 +24,10 @@ public class POJOGenerator extends AbstractMethodGenerator{
 	public void generate() {
 		List<JavaClass> javaClassList =genJavaClass();
 		for(JavaClass javaClass:javaClassList){
-			output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+			output(javaClass.getFormattedContent(),
+					context.getConfig().getProjectPath(),
+					javaClass.getJavaPackage().getPackageName(),
+					javaClass.getClassName()+".java");
 		}
 
 	}

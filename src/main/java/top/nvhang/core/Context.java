@@ -1,5 +1,7 @@
 package top.nvhang.core;
 
+import com.esotericsoftware.yamlbeans.YamlException;
+import com.esotericsoftware.yamlbeans.YamlReader;
 import org.springframework.beans.BeanUtils;
 import top.nvhang.configuration.DBConfiguration;
 import top.nvhang.configuration.TableConfiguration;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import top.nvhang.util.BaseUtil;
 
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +25,14 @@ import java.util.Properties;
  */
 @Component
 public class Context implements InitializingBean {
-	@Autowired
+
 	private DBConfiguration config;
 	private Connection connection;
 	private DatabaseMetaData metaData;
 	List<Table> tables;
-	private String projectClassPath;
-	private List<TableConfiguration> tableConfigurations=new ArrayList<TableConfiguration>();
+
+
+
 
 	public void afterPropertiesSet() throws Exception {
 		initConfig();
@@ -36,7 +40,27 @@ public class Context implements InitializingBean {
 	}
 
 	public void initConfig(){
-		tableConfigurations.add(new TableConfiguration());
+		FileInputStream fileInputStream = null;
+
+		String path =System.getProperty("user.dir");
+		path=path.substring(0,path.lastIndexOf(File.separatorChar));
+		try {
+			FileReader fileReader =new FileReader(new File(path,"config.yaml"));
+			YamlReader yamlReader =new YamlReader(fileReader);
+			config=yamlReader.read(DBConfiguration.class);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (YamlException e) {
+			e.printStackTrace();
+		} finally {
+			if(fileInputStream!=null){
+				try {
+					fileInputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public void getConnnection() {
@@ -62,7 +86,7 @@ public class Context implements InitializingBean {
 		ResultSet resultSet = null;
 		List<Table> tables = new ArrayList<Table>();
 		try {
-			for(TableConfiguration tableConfiguration:tableConfigurations){
+			for(TableConfiguration tableConfiguration:config.getTableConfigurationList()){
 				Table table=new Table();
 				tables.add(table);
 				table.setTableConfiguration(tableConfiguration);
@@ -148,13 +172,12 @@ public class Context implements InitializingBean {
 		this.tables = tables;
 	}
 
-
-	public String getProjectClassPath() {
-		return projectClassPath;
+	public DBConfiguration getConfig() {
+		return config;
 	}
 
-	public void setProjectClassPath(String projectClassPath) {
-		this.projectClassPath = projectClassPath;
+	public void setConfig(DBConfiguration config) {
+		this.config = config;
 	}
 }
 

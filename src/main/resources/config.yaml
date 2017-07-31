@@ -1,0 +1,54 @@
+#example
+#driverClassName: oracle.jdbc.OracleDriver
+#user: forall_stock
+#password: forall_stock
+#url: jdbc:oracle:thin:@172.21.1.3:1521:dev
+#tableConfigurationList:
+#  - tableName: INTENTION_TRADER       tableConfiguration
+#    daoPackageName: top.test
+#    managerPackageName: top.test
+#    daoImplPackageName: top.test
+#    managerImplPackageName: top.test
+#    ibatisPackageName: top.test
+#  - tableName: STOCK_A_QUOTA          tableConfiguration
+#    daoPackageName: top.test2
+#    managerPackageName: top.test2
+#    daoImplPackageName: top.test2
+#    managerImplPackageName: top.test2
+#    ibatisPackageName: top.test2
+
+
+#all tableConfiguration property
+#daoPackageName
+#managerPackageName
+#daoImplPackageName
+#managerImplPackageName
+#ibatisPackageName
+#targetPath
+#daoSuperClassName
+#serviceSuperClassName
+#selectUsingIdSqlId
+#queryListSqlId
+#queryPageableListSqlId
+#insertObjectSqlId
+#updateObjectSqlId
+#deleteObjectSqlId
+#selectCountSqlId
+
+driverClassName: oracle.jdbc.OracleDriver
+user: forall_stock
+password: forall_stock
+url: jdbc:oracle:thin:@172.21.1.3:1521:dev
+tableConfigurationList:
+  - tableName: INTENTION_TRADER
+    daoPackageName: top.test
+    managerPackageName: top.test
+    daoImplPackageName: top.test
+    managerImplPackageName: top.test
+    ibatisPackageName: top.test
+  - tableName: STOCK_A_QUOTA
+    daoPackageName: top.test2
+    managerPackageName: top.test2
+    daoImplPackageName: top.test2
+    managerImplPackageName: top.test2
+    ibatisPackageName: top.test2

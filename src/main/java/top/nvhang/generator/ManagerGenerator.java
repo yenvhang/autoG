@@ -24,12 +24,18 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		genManager();
 		if(interfaceList!=null&&interfaceList.size()!=0){
 			for(Interface interFace:interfaceList){
-				output(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
+				output(interFace.getFormattedContent(),
+						context.getConfig().getProjectPath(),
+						interFace.getJavaPackage().getPackageName(),
+						interFace.getInterFaceName()+".java");
 			}
 		}
 		if(javaClassList!=null&&javaClassList.size()!=0){
 			for(JavaClass javaClass:javaClassList){
-				output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+				output(javaClass.getFormattedContent(),
+						context.getConfig().getProjectPath(),
+						javaClass.getJavaPackage().getPackageName(),
+						javaClass.getClassName()+".java");
 
 			}
 		}
