@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
 import top.nvhang.model.db.Column;
 import top.nvhang.model.db.Table;
+import top.nvhang.util.DocumentWarpper;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by yeyh on 2017/7/26.
  */
 @Component
-public class SqlMapGenerator implements Generator {
+public class SqlMapGenerator extends AbstractFileGenerator {
 	public static final String PAGE_BEGIN_SQL = "select * from ( select t1.* , rownum linenum from (";
 	public static final String PAGE_END_SQL = ") t1 where rownum &lt;= #endIndex#) t2 where t2.linenum\n" +
 			"\t\t&gt;= #beginIndex#";
@@ -34,15 +36,15 @@ public class SqlMapGenerator implements Generator {
 
 	public void generate() {
 
-		List<Document> documents=genIbatisDocuments();
-		for(Document document:documents){
+		List<DocumentWarpper> documents=genIbatisDocuments();
+		for(DocumentWarpper warpper:documents){
 
 			try {
-				FileWriter out = new FileWriter("sqlmap-test.xml");
+				FileWriter out = new FileWriter(new File(warpper.getTargetPath(),warpper.getFileName()));
 				OutputFormat format = OutputFormat.createPrettyPrint();
 				XMLWriter xw = new XMLWriter(out,format);
 				xw.setEscapeText(false);
-				xw.write(document);
+				xw.write(warpper.getDocument());
 				out.flush();
 
 			} catch (IOException e) {
@@ -52,11 +54,13 @@ public class SqlMapGenerator implements Generator {
 
 	}
 
-	private List<Document> genIbatisDocuments() {
-		List<Document> documentList=new ArrayList<Document>();
+	private List<DocumentWarpper> genIbatisDocuments() {
+		List<DocumentWarpper> documentList=new ArrayList<DocumentWarpper>();
 		for(Table table:context.getTables()){
 			Document document=getBaseDocument();
-			documentList.add(document);
+			documentList.add(new DocumentWarpper(document,
+					table.getTableConfiguration().getTargetPath(),
+					table.getTableConfiguration().getMapperName()));
 
 
 			addRootElement(document,table);

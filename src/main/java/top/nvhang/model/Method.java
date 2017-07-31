@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by creep on 2017/7/8.
  */
-public class Method extends Feature implements CodeMaker {
+public class Method extends Feature  {
     private boolean constructor;
     private String methodName;
     private JavaType returnType;
@@ -71,9 +71,11 @@ public class Method extends Feature implements CodeMaker {
     public void setReturnType(JavaType returnType) {
         this.returnType = returnType;
     }
-
+	@Override
     public String getFormattedContent() {
         StringBuffer sb =new StringBuffer();
+        sb.append(super.getFormattedContent());
+
         sb.append(getVisibility().getValue());
 
         if(isStatic()){
@@ -110,7 +112,11 @@ public class Method extends Feature implements CodeMaker {
         if(!isAbstract){
 			sb.append(" {");
 			sb.append("\n");
+			if(returnType!=null&&JavaType.voidInstance!=returnType){
+				sb.append("return ");
+			}
 			sb.append(methodBody);
+			sb.append(";");
 			sb.append("\n");
 			sb.append("}");
 		}

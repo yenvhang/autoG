@@ -1,13 +1,19 @@
 package top.nvhang.model;
 
+import top.nvhang.core.CodeMaker;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by creep on 2017/7/9.
  */
-public class Feature {
+public class Feature implements CodeMaker {
     private boolean isStatic;
     private boolean isFinal;
     private JavaVisibility visibility = JavaVisibility.DEFAULT;
     private Comment comment;
+    private List<String> annotations;
 
     public Comment getComment() {
         return comment;
@@ -39,5 +45,35 @@ public class Feature {
 
     public void setVisibility(JavaVisibility visibility) {
         this.visibility = visibility;
+    }
+
+    public List<String> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<String> annotations) {
+        this.annotations = annotations;
+    }
+
+    public String getFormattedContent() {
+        StringBuilder sb =new StringBuilder();
+        if(getComment()!=null){
+            sb.append(getComment().getFormattedContent());
+        }
+        if(annotations!=null&&annotations.size()!=0){
+
+            for(String annotation:annotations){
+                sb.append(annotation);
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+
+    public void addAnnotation(String annotation){
+        if(annotations==null){
+            annotations=new ArrayList<String>();
+        }
+        annotations.add(annotation);
     }
 }

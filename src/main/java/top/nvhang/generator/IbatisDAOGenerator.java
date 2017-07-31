@@ -24,12 +24,12 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		genIbatisDAO();
 		if(interfaceList!=null&&interfaceList.size()!=0){
 			for(Interface interFace:interfaceList){
-				BaseUtil.write(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
+				output(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
 			}
 		}
 		if(daoImplClassList!=null&&daoImplClassList.size()!=0){
 			for(JavaClass javaClass:daoImplClassList){
-				BaseUtil.write(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+				output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
 			}
 		}
 
@@ -52,6 +52,7 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDaoImplPackageName()));
 			javaClass.addInterface(interFace);
+			javaClass.setSuperClass(table.getTableConfiguration().getDaoSuperClassName());
 
 			addSelectObjectUsingIdMethod(javaClass,interFace,table);
 			addQueryPageableListMethod(javaClass,interFace,table);

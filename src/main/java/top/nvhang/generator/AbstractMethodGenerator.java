@@ -6,7 +6,7 @@ import top.nvhang.model.db.Table;
 /**
  * Created by yeyh on 2017/7/28.
  */
-public abstract class AbstractMethodGenerator {
+public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 	protected  void addAbstractDeleteObjectMethod(Interface interFace, Table table){
 		Method method =new Method();
 		interFace.addMethod(method);

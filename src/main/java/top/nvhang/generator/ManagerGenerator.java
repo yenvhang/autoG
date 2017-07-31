@@ -1,12 +1,10 @@
 package top.nvhang.generator;
 
+import org.omg.IOP.TAG_ALTERNATE_IIOP_ADDRESS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
-import top.nvhang.model.Interface;
-import top.nvhang.model.JavaClass;
-import top.nvhang.model.JavaPackage;
-import top.nvhang.model.JavaVisibility;
+import top.nvhang.model.*;
 import top.nvhang.model.db.Table;
 import top.nvhang.util.BaseUtil;
 
@@ -26,12 +24,13 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		genManager();
 		if(interfaceList!=null&&interfaceList.size()!=0){
 			for(Interface interFace:interfaceList){
-				BaseUtil.write(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
+				output(interFace.getFormattedContent(),"",interFace.getInterFaceName()+".java");
 			}
 		}
 		if(javaClassList!=null&&javaClassList.size()!=0){
 			for(JavaClass javaClass:javaClassList){
-				BaseUtil.write(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+				output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+
 			}
 		}
 	}
@@ -49,12 +48,171 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getManagerImplPackageName()));
 			javaClass.addInterface(interFace);
-			addAbstractDeleteObjectMethod(interFace,table);
-			addAbstractInsertObjectMethod(interFace,table);
-			addAbstractQueryListMethod(interFace,table);
-			addAbstractSelectObjectUsingIdMethod(interFace,table);
-			addAbstractQueryPageableListMethod(interFace,table);
-			addAbstractUpdateObjectMethod(interFace,table);
+			javaClass.setSuperClass(table.getTableConfiguration().getServiceSuperClassName());
+			Field field=new Field(JavaVisibility.PRIVATE,
+					table.getTableConfiguration().getDomainObjectName()+
+							table.getTableConfiguration().getDaoSuffix(),
+					new JavaType(table.getTableConfiguration().getDaoName()));
+			field.addAnnotation("@Autowired");
+			javaClass.addField(field);
+
+
+			addSelectObjectUsingIdMethod(javaClass,interFace,table);
+			addQueryPageableListMethod(javaClass,interFace,table);
+			addQueryListMethod(javaClass,interFace,table);
+			addInsertObjectMethod(javaClass,interFace,table);
+			addUpdateObjectMethod(javaClass,interFace,table);
+			addDeleteObjectMethod(javaClass,interFace,table);
+
+
+
+
 		}
+	}
+
+	private void addDeleteObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(JavaType.voidInstance);
+		method.setMethodName(table.getTableConfiguration().getDeleteObjectSqlId());
+		method.addParameter(
+				new Parameter(
+						table.getTableConfiguration().getDomainObjectName(),
+						new JavaType(table.getTableConfiguration().getClassName())));
+
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getDeleteObjectSqlId());
+		sb.append("(");
+		sb.append("id");
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+		addAbstractDeleteObjectMethod(interFace,table);
+
+	}
+
+	private void addUpdateObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(JavaType.voidInstance);
+		method.setMethodName(table.getTableConfiguration().getUpdateObjectSqlId());
+		method.addParameter(
+				new Parameter(
+						table.getTableConfiguration().getDomainObjectName(),
+						new JavaType(table.getTableConfiguration().getClassName())));
+
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getUpdateObjectSqlId());
+		sb.append("(");
+		sb.append(table.getTableConfiguration().getDomainObjectName());
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+		addAbstractUpdateObjectMethod(interFace,table);
+	}
+
+	private void addInsertObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(JavaType.voidInstance);
+		method.setMethodName(table.getTableConfiguration().getInsertObjectSqlId());
+		method.addParameter(
+				new Parameter(
+						table.getTableConfiguration().getDomainObjectName(),
+						new JavaType(table.getTableConfiguration().getClassName())));
+
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getInsertObjectSqlId());
+		sb.append("(");
+		sb.append(table.getTableConfiguration().getDomainObjectName());
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+		addAbstractInsertObjectMethod(interFace,table);
+	}
+
+	private void addQueryListMethod(JavaClass javaClass, Interface interFace, Table table) {
+
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
+		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
+		method.addParameter(
+				new Parameter(
+						table.getTableConfiguration().getDomainObjectQueryName(),
+						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getQueryPageableListSqlId());
+		sb.append("(");
+		sb.append(table.getTableConfiguration().getDomainObjectQueryName());
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+
+		addAbstractQueryListMethod(interFace,table);
+
+	}
+
+	private void addQueryPageableListMethod(JavaClass javaClass, Interface interFace, Table table) {
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(JavaType.voidInstance);
+		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
+		method.addParameter(
+				new Parameter(
+						table.getTableConfiguration().getDomainObjectQueryName(),
+						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getQueryPageableListSqlId());
+		sb.append("(");
+		sb.append(table.getTableConfiguration().getDomainObjectQueryName());
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+
+		addAbstractQueryPageableListMethod(interFace,table);
+	}
+
+	private void addSelectObjectUsingIdMethod(JavaClass javaClass, Interface interFace, Table table) {
+
+		Method method=new Method();
+		javaClass.addMethod(method);
+		method.setVisibility(JavaVisibility.PUBLIC);
+		method.setReturnType(new JavaType(table.getTableConfiguration().getClassName()));
+		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
+		method.addParameter(new Parameter("id",JavaType.longInstance));
+		StringBuilder sb =new StringBuilder();
+		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
+			sb.append(javaClass.getFields().get(0).getFieldName());
+		}
+		sb.append(".");
+		sb.append(table.getTableConfiguration().getSelectUsingIdSqlId());
+		sb.append("(");
+		sb.append("id");
+		sb.append(")");
+		method.setMethodBody(sb.toString());
+		addAbstractSelectObjectUsingIdMethod(interFace,table);
 	}
 }

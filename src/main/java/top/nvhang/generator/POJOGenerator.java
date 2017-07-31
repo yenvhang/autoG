@@ -18,13 +18,13 @@ import java.util.List;
  * Created by yeyh on 2017/7/18.
  */
 @Component
-public class POJOGenerator implements Generator{
+public class POJOGenerator extends AbstractMethodGenerator{
 	@Autowired
 	private Context context;
 	public void generate() {
 		List<JavaClass> javaClassList =genJavaClass();
 		for(JavaClass javaClass:javaClassList){
-			BaseUtil.write(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
+			output(javaClass.getFormattedContent(),"",javaClass.getClassName()+".java");
 		}
 
 	}

@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by creep on 2017/7/9.
  */
-public class JavaClass extends Feature implements CodeMaker {
+public class JavaClass extends Feature {
 
     private List<Field> fields;
 	private List<Method> methods;
@@ -20,6 +20,7 @@ public class JavaClass extends Feature implements CodeMaker {
 	private List<Interface> interfaceList;
 	private JavaPackage javaPackage;
 	private String className;
+
 
 	public List<Interface> getInterfaceList() {
 		return interfaceList;
@@ -76,7 +77,7 @@ public class JavaClass extends Feature implements CodeMaker {
     public void setSuperClass(String superClass) {
         this.superClass = superClass;
     }
-
+	@Override
     public String getFormattedContent() {
         StringBuffer sb =new StringBuffer();
 
@@ -91,10 +92,7 @@ public class JavaClass extends Feature implements CodeMaker {
                 sb.append("\n");
             }
         }
-		if(getComment()!=null){
-			sb.append(getComment().getFormattedContent());
-		}
-
+        sb.append(super.getFormattedContent());
 
         sb.append(getVisibility().getValue());
 
@@ -127,8 +125,6 @@ public class JavaClass extends Feature implements CodeMaker {
         if(fields!=null&&fields.size()!=0){
 			for(Field field:fields){
 
-				sb.append(field.getComment().getFormattedContent());
-
 				sb.append(field.getFormattedContent());
 				sb.append("\n");
 			}
@@ -137,11 +133,6 @@ public class JavaClass extends Feature implements CodeMaker {
 
 		if(methods!=null&&methods.size()!=0){
 			for(Method method: methods){
-
-				if(method.getComment()!=null){
-					sb.append(method.getComment().getFormattedContent());
-				}
-
 				sb.append(method.getFormattedContent());
 				sb.append("\n");
 			}
@@ -162,5 +153,11 @@ public class JavaClass extends Feature implements CodeMaker {
     		interfaceList=new ArrayList<Interface>();
 		}
 		interfaceList.add(interFace);
+	}
+	public void addField(Field field){
+		if(fields==null){
+			fields=new ArrayList<Field>();
+		}
+		fields.add(field);
 	}
 }
