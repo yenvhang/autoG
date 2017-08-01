@@ -52,15 +52,15 @@ tableConfigurationList:
      daoImplPackageName: top.nvhang.dao.daoImpl  
      managerPackageName: top.nvhang.manage  
      managerImplPackageName: top.nvhang.manage.managerImpl  
-     sqlMapPath: top.nvhang  
+       sqlMapPath: top.nvhang 
   \- tableName: STOCK_A_QUOTA  
-     domainPackageName: top.nvhang  
-     domainQueryPackageName: top.nvhang.query  
-     daoPackageName: top.nvhang.stockAquota  
-     daoImplPackageName: top.nvhang.manage  
-     managerPackageName: top.nvhang.manage.managerImpl  
-     managerImplPackageName: top.nvhang  
-     sqlMapPath: top.nvhang   
+     domainPackageName: top.nvhang  
+     domainQueryPackageName: top.nvhang.query  
+     daoPackageName: top.nvhang.stockAquota  
+     daoImplPackageName: top.nvhang.manage  
+     managerPackageName: top.nvhang.manage.managerImpl  
+     managerImplPackageName: top.nvhang  
+     sqlMapPath: top.nvhang  
 
 
 
