@@ -45,7 +45,7 @@ user: username
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
 tableConfigurationList:  
-  \- tableName: INTENTION_TRADER  
+  \- tableName: INTENTION_TRADER  
      domainPackageName: top.nvhang  
      domainQueryPackageName: top.nvhang.query   
      daoPackageName: top.nvhang.dao  
