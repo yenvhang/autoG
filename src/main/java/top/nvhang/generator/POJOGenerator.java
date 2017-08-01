@@ -38,7 +38,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 		for (Table table : context.getTables()) {
 			JavaClass javaClass = new JavaClass();
 			javaClassList.add(javaClass);
-			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getPackageName()));
+			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDomainPackageName()));
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setClassName(table.getTableConfiguration().getClassName());
 			javaClass.setComment(new Comment(table.getComment()));
@@ -66,7 +66,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 	private void genExtraJavaClass(List<JavaClass> javaClassList, Table table) {
 		JavaClass javaClass=new JavaClass();
 		javaClassList.add(javaClass);
-		javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getPackageName()+".query"));
+		javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDomainQueryObjectPackageName()));
 		javaClass.setVisibility(JavaVisibility.PUBLIC);
 		javaClass.setClassName(table.getTableConfiguration().getClassName()+"Query");
 		javaClass.setSuperClass("Pagination<"+table.getTableConfiguration().getClassName()+">");
@@ -121,9 +121,9 @@ public class POJOGenerator extends AbstractMethodGenerator{
 	public String getGetterMethodBody(Field field) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t");
-		sb.append("return ");
+
 		sb.append(field.getFieldName());
-		sb.append(";");
+
 		return sb.toString();
 	}
 
@@ -134,7 +134,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 		sb.append(field.getFieldName());
 		sb.append("=");
 		sb.append(field.getFieldName());
-		sb.append(";");
+
 		return sb.toString();
 	}
 }

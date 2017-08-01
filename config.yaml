@@ -1,0 +1,68 @@
+
+
+#all tableConfiguration property
+
+#tableName not null
+#className defalut STOCK_MONITOR(tableName) -> StockMonitor(className)
+#domainPackageName not null
+#domainQueryPackageName
+#domainObjectName default STOCK_MONITOR(tableName) -> stockMonitor(domainObjectName)
+#domainObjectQueryName default "stockMonitorQuery"(domainObjectName+Query)
+#domainObjectQueryClassName default ClassName+"Query"
+#domainQueryObjectPackageName default domainPackageName+".query"
+
+
+#daoSuffix  default "Dao"
+#daoImplSuffix  default "DaoImpl"
+#managerSuffix default "Manager"
+#managerImplSuffix default "ManagerImpl"
+#mapperSuffix default "_sqlMap"
+
+
+
+#daoPackageName not null
+#daoPackageName not null
+#daoImplPackageName not null
+#managerPackageName not null
+#managerImplPackageName not null
+#sqlMapPath not null
+#nameSpace default className
+#mapperName default domainObjectName+mapperSuffix+".xml"
+#daoSuperClassName default "SqlMapClientDaoSupport"
+#managerSuperClassName default ""
+#managerName default className+managerSuffix
+#managerImplName default className+managerImplSuffix
+#daoImplName default className+daoSuffix
+#daoImplName className+daoImplSuffix
+
+
+#selectUsingIdSqlId default "select"+className+"UsingId"
+#queryListSqlId default "query"+className+"List"
+#queryPageableListSqlId default "queryPageableList"
+#insertObjectSqlId default "insert"+className
+#updateObjectSqlId default "update"+className
+#deleteObjectSqlId default "delete"+className
+#selectCountSqlId  default "selectCount"
+
+driverClassName: oracle.jdbc.OracleDriver
+user: xxx
+password: xxx
+url: jdbc:oracle:thin:xxx:dev
+projectPath: C:\Users\Administrator\Desktop
+tableConfigurationList:
+  - tableName: PROJECT_PLAN
+    domainPackageName: top.nvhang.domain
+    domainQueryPackageName: top.nvhang.domain.query
+    daoPackageName: top.nvhang.dao
+    daoImplPackageName: top.nvhang.dao.daoImpl
+    managerPackageName: top.nvhang.manage
+    managerImplPackageName: top.nvhang.manage.managerImpl
+    sqlMapPath: top.nvhang
+  - tableName: PROJECT
+    domainPackageName: top.nvhang.domain
+    domainQueryPackageName: top.nvhang.domain.query
+    daoPackageName: top.nvhang.dao
+    daoImplPackageName: top.nvhang.dao.daoImpl
+    managerPackageName: top.nvhang.manage
+    managerImplPackageName: top.nvhang.manage.managerImpl
+    sqlMapPath: top.nvhang

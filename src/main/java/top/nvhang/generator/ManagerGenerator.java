@@ -47,10 +47,10 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 			JavaClass javaClass=new JavaClass();
 			interfaceList.add(interFace);
 			javaClassList.add(javaClass);
-			interFace.setInterFaceName(table.getTableConfiguration().getServiceName());
+			interFace.setInterFaceName(table.getTableConfiguration().getManagerName());
 			interFace.setJavaPackage(new JavaPackage(table.getTableConfiguration().getManagerPackageName()));
 
-			javaClass.setClassName(table.getTableConfiguration().getServiceImplName());
+			javaClass.setClassName(table.getTableConfiguration().getManagerImplName());
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getManagerImplPackageName()));
 			javaClass.addInterface(interFace);

@@ -43,7 +43,7 @@ public class Context implements InitializingBean {
 		FileInputStream fileInputStream = null;
 
 		String path =System.getProperty("user.dir");
-		path=path.substring(0,path.lastIndexOf(File.separatorChar));
+
 		try {
 			FileReader fileReader =new FileReader(new File(path,"config.yaml"));
 			YamlReader yamlReader =new YamlReader(fileReader);

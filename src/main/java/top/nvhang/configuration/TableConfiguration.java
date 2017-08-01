@@ -18,24 +18,22 @@ public class TableConfiguration {
 	private String schemPattern = "%";
 	private String columnNamePatter = "%";
 	private String tableName;
-	private String packageName;
+	private String domainPackageName;
+	private String domainQueryPackageName;
 	private String domainObjectName;
 	private String domainObjectQueryName;
 	private String domainObjectQueryClassName;
 	private String domainQueryObjectPackageName;
 
 	private String daoPackageName;
-
-	private String managerPackageName;
-
 	private String daoImplPackageName;
-
+	private String managerPackageName;
 	private String managerImplPackageName;
 
-	private String ibatisPackageName;
-	private String targetPath="top.nvhang";
+	private String sqlMapPath;
 	private String daoSuperClassName="SqlMapClientDaoSupport";
-	private String serviceSuperClassName="";
+	private String managerSuperClassName="";
+
 	private String selectUsingIdSqlId;
 	private String queryListSqlId;
 	private String queryPageableListSqlId;
@@ -56,19 +54,19 @@ public class TableConfiguration {
 	/**
 	 * 业务层接口名称
 	 */
-	private String serviceName;
+	private String managerName;
 	/**
 	 * 业务层接口后缀
 	 */
-	private String serviceSuffix;
+	private String managerSuffix;
 	/**
 	 * 业务层实现类名称
 	 */
-	private String serviceImplName;
+	private String managerImplName;
 	/**
 	 * 业务层实现类后缀
 	 */
-	private String serviceImplSuffix;
+	private String managerImplSuffix;
 	/**
 	 *持久层接口名称
 	 */
@@ -100,6 +98,9 @@ public class TableConfiguration {
 
 
 	public String getDomainQueryObjectPackageName() {
+		if(StringUtils.isBlank(domainQueryObjectPackageName)){
+			return getDomainPackageName()+".query";
+		}
 		return domainQueryObjectPackageName;
 	}
 
@@ -199,12 +200,23 @@ public class TableConfiguration {
 		this.tableName = tableName;
 	}
 
-	public String getPackageName() {
-		return packageName;
+	public String getDomainPackageName() {
+		return domainPackageName;
 	}
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
+	public void setDomainPackageName(String domainPackageName) {
+		this.domainPackageName = domainPackageName;
+	}
+
+	public String getDomainQueryPackageName() {
+		if(StringUtils.isBlank(domainQueryObjectPackageName)){
+			return getDomainPackageName()+".query";
+		}
+		return domainQueryPackageName;
+	}
+
+	public void setDomainQueryPackageName(String domainQueryPackageName) {
+		this.domainQueryPackageName = domainQueryPackageName;
 	}
 
 	public void setClassName(String className) {
@@ -229,49 +241,54 @@ public class TableConfiguration {
 		}
 		return className;
 	}
-	public String getServiceName() {
-		if(StringUtils.isBlank(serviceName)){
-			return getClassName()+getServiceSuffix();
+	public String getManagerName() {
+		if(StringUtils.isBlank(managerName)){
+			return getClassName()+getManagerSuffix();
 		}
-		return serviceName;
+		return managerName;
 	}
 
 
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
 	}
-	public String getServiceSuffix() {
-		if(StringUtils.isBlank(serviceSuffix)){
+
+	public String getManagerSuffix() {
+		if(StringUtils.isBlank(managerSuffix)){
 			return DEFAULT_MANAGER_SUFFIX;
 		}
-		return serviceSuffix;
-	}
-	public void setServiceSuffix(String serviceSuffix) {
-		this.serviceSuffix = serviceSuffix;
+		return managerSuffix;
 	}
 
-	public String getServiceImplName() {
-		if(StringUtils.isBlank(serviceImplName)){
-			return getClassName()+getServiceImplSuffix();
+	public void setManagerSuffix(String managerSuffix) {
+		this.managerSuffix = managerSuffix;
+	}
+
+	public String getManagerImplName() {
+		if(StringUtils.isBlank(managerImplName)){
+			return getClassName()+getManagerImplSuffix();
 		}
-		return serviceImplName;
+		return managerImplName;
 	}
 
-	public void setServiceImplName(String serviceImplName) {
-		this.serviceImplName = serviceImplName;
+	public void setManagerImplName(String managerImplName) {
+		this.managerImplName = managerImplName;
 	}
 
-	public String getServiceImplSuffix() {
-		if(StringUtils.isBlank(serviceImplSuffix)){
+	public String getManagerImplSuffix() {
+		if(StringUtils.isBlank(managerImplSuffix)){
 			return DEFAULT_MANAGER_IMPL_SUFFIX;
 		}
-		return serviceImplSuffix;
+		return managerImplSuffix;
 	}
 
-	public void setServiceImplSuffix(String serviceImplSuffix) {
-		this.serviceImplSuffix = serviceImplSuffix;
+	public void setManagerImplSuffix(String managerImplSuffix) {
+		this.managerImplSuffix = managerImplSuffix;
 	}
+
+
+
 
 	public String getDaoImplName() {
 		if(StringUtils.isBlank(daoImplName)){
@@ -448,26 +465,20 @@ public class TableConfiguration {
 	}
 
 	public String getServiceSuperClassName() {
-		return serviceSuperClassName;
+		return managerSuperClassName;
 	}
 
 	public void setServiceSuperClassName(String serviceSuperClassName) {
-		this.serviceSuperClassName = serviceSuperClassName;
+		this.managerImplPackageName = serviceSuperClassName;
 	}
 
-	public String getTargetPath() {
-		return targetPath;
+	public String getSqlMapPath() {
+		return sqlMapPath;
 	}
 
-	public void setTargetPath(String targetPath) {
-		this.targetPath = targetPath;
+	public void setSqlMapPath(String sqlMapPath) {
+		this.sqlMapPath = sqlMapPath;
 	}
 
-	public String getIbatisPackageName() {
-		return ibatisPackageName;
-	}
 
-	public void setIbatisPackageName(String ibatisPackageName) {
-		this.ibatisPackageName = ibatisPackageName;
-	}
 }

@@ -65,7 +65,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 			Document document=getBaseDocument();
 			documentList.add(new DocumentWarpper(document,
 					BaseUtil.caculateAbsolutelyPath(context.getConfig().getProjectPath(),
-							table.getTableConfiguration().getTargetPath()),
+							table.getTableConfiguration().getSqlMapPath()),
 					table.getTableConfiguration().getMapperName()));
 
 
@@ -220,14 +220,16 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 
 		Element element =root.addElement("typeAlias");
 		element.addAttribute("alias",table.getTableConfiguration().getDomainObjectName());
-		element.addAttribute("type",table.getTableConfiguration().getPackageName()+"."+table.getTableConfiguration().getClassName());
+		element.addAttribute("type",table.getTableConfiguration().getDomainPackageName()+
+				"."+
+				table.getTableConfiguration().getClassName());
 
 		Element element2 =root.addElement("typeAlias");
 		element2.addAttribute("alias",table.getTableConfiguration().getDomainObjectQueryName());
-		element2.addAttribute("type",table.getTableConfiguration().getPackageName()+
-				".query."+
-				table.getTableConfiguration().getClassName()+
-				"Query");
+		element2.addAttribute("type",table.getTableConfiguration().getDomainQueryObjectPackageName()+
+				"."+
+				table.getTableConfiguration().getDomainObjectQueryClassName());
+
 	}
 
 	private void addCommonSeqmentElement(Element root,Table table) {
