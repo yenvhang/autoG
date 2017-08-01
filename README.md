@@ -57,7 +57,7 @@ tableConfigurationList:
     domainPackageName: top.nvhang.domain  
     domainQueryPackageName: top.nvhang.domain.query  
     daoPackageName: top.nvhang.dao  
-    daoImplPackageName: top.nvhang.daoImpl  
+    daoImplPackageName: top.nvhang.dao.daoImpl  
     managerPackageName: top.nvhang.manage  
     managerImplPackageName: top.nvhang.manage.managerImpl  
     sqlMapPath: top.nvhang  
