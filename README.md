@@ -61,9 +61,11 @@ tableConfigurationList:
     managerPackageName: top.nvhang.manage  
     managerImplPackageName: top.nvhang.manage.managerImpl  
     sqlMapPath: top.nvhang  
+![](pic/config.png) 
 
 ![](pic/pojo.png) 
 
+![](pic/sql.png) 
 
 
 
