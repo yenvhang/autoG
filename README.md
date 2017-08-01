@@ -45,7 +45,7 @@ user: username
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
 tableConfigurationList:  
-  \- tableName: INTENTION_TRADER  
+  \- tableName: PROJECT  
     domainPackageName: top.nvhang.domain  
     domainQueryPackageName: top.nvhang.domain.query  
     daoPackageName: top.nvhang.dao  
@@ -53,7 +53,7 @@ tableConfigurationList:
     managerPackageName: top.nvhang.manage  
     managerImplPackageName: top.nvhang.manage.managerImpl  
     sqlMapPath: top.nvhang  
-  \- tableName: STOCK_A_QUOTA  
+  \- tableName: PROJECT_PLAN  
     domainPackageName: top.nvhang.domain  
     domainQueryPackageName: top.nvhang.domain.query  
     daoPackageName: top.nvhang.dao  
