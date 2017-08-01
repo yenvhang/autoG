@@ -15,8 +15,8 @@ import top.nvhang.util.BaseUtil;
 public class TableConfiguration {
 
 	private String catalog = null;
-	private String schemPattern = "%";
-	private String columnNamePatter = "%";
+	private String schemPattern;
+	private String columnNamePatter;
 	private String tableName;
 	private String domainPackageName;
 	private String domainQueryPackageName;

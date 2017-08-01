@@ -45,10 +45,10 @@
 #selectCountSqlId  default "selectCount"
 
 driverClassName: oracle.jdbc.OracleDriver
-user: xxx
-password: xxx
-url: jdbc:oracle:thin:xxx:dev
-projectPath: C:\Users\Administrator\Desktop
+user: takunghz_dev
+password: takunghz_dev
+url: jdbc:oracle:thin:@172.21.1.3:1521:dev
+projectPath: C:\Users\Administrator\Desktop\sample
 tableConfigurationList:
   - tableName: PROJECT_PLAN
     domainPackageName: top.nvhang.domain

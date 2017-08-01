@@ -94,7 +94,8 @@ public class Context implements InitializingBean {
 					metaData = connection.getMetaData();
 					tableResultset = metaData.getTables(
 							tableConfiguration.getCatalog(),
-							tableConfiguration.getSchemPattern(),
+							tableConfiguration.getSchemPattern()==null?
+									config.getUser().toUpperCase():tableConfiguration.getSchemPattern(),
 							tableConfiguration.getTableName(),
 							new String[]{"TABLE"});
 
@@ -107,7 +108,8 @@ public class Context implements InitializingBean {
 
 					resultSet = metaData.getColumns(
 							tableConfiguration.getCatalog(),
-							tableConfiguration.getSchemPattern(),
+							tableConfiguration.getSchemPattern()==null?
+									config.getUser().toUpperCase():tableConfiguration.getSchemPattern(),
 							tableConfiguration.getTableName(),
 							tableConfiguration.getColumnNamePatter());
 

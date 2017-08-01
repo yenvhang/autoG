@@ -46,7 +46,9 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 					file.mkdirs();
 				}
 				FileWriter out = new FileWriter(new File(file,warpper.getFileName()));
-				OutputFormat format = OutputFormat.createPrettyPrint();
+				OutputFormat format = new OutputFormat();
+				format.setNewlines(true);
+				format.setIndent(true);
 				XMLWriter xw = new XMLWriter(out,format);
 				xw.setEscapeText(false);
 				xw.write(warpper.getDocument());
@@ -90,7 +92,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 	}
 
 	private void addSelectCountElement(Element root, Table table) {
-		Element element=root.addElement("SELECT");
+		Element element=root.addElement("select");
 		element.addAttribute("id",table.getTableConfiguration().getSelectCountSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
@@ -110,18 +112,21 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 	}
 
 	private void addDeleteElement(Element root,Table table) {
-		Element element=root.addElement("DELETE");
+		Element element=root.addElement("delete");
 		element.addAttribute("id",table.getTableConfiguration().getDeleteObjectSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,"long");
 		element.setText("DELETE FROM "+table.getTableConfiguration().getTableName()+" WHERE ID="+"#id#");
 	}
 
 	private void addUpdateElement(Element root,Table table) {
-		Element element=root.addElement("UPDATE");
+		Element element=root.addElement("update");
 		element.addAttribute("id",table.getTableConfiguration().getUpdateObjectSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 		StringBuilder sb =new StringBuilder();
 		for(Column column:table.getColumnList()){
+			if(column.getFieldName().equals("id")){
+				continue;
+			}
 			sb.append("<isNotNull prepend=\",\" property=\""+column.getFieldName()+"\">"+
 					column.getColumnName()+"=#"+column.getFieldName()+"#"+
 					"</isNotNull>");
@@ -130,30 +135,37 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 			"<dynamic prepend=\"SET\">"+
 			sb.toString()+
 			"</dynamic>");
+		element.addText("\n");
+		element.addText("WHERE ID=#id#");
 	}
 
 	private void addInsertElement(Element root,Table table) {
-		Element element =root.addElement("INSERT");
+		Element element =root.addElement("insert");
 		element.addAttribute("id",table.getTableConfiguration().getInsertObjectSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 		StringBuilder sb =new StringBuilder();
 		StringBuilder sb2=new StringBuilder();
-		for(Column column:table.getColumnList()){
-			sb.append(column.getColumnName());
-			sb2.append("#"+column.getFieldName()+"#");
-			sb.append(",");
-			sb2.append(",");
-			sb.append("\n");
-			sb2.append("\n");
-		}
+		if(table.getColumnList()!=null&&table.getColumnList().size()!=0) {
+			for (Column column : table.getColumnList()) {
+				sb.append("\n");
+				sb.append("\t\t");
+				sb2.append("\n");
+				sb2.append("\t\t");
+				sb.append(column.getColumnName());
+				sb2.append("#" + column.getFieldName() + "#");
+				sb.append(",");
+				sb2.append(",");
 
-		String temp=sb.toString().trim();
-		String temp2=sb2.toString().trim();
-		if(temp.lastIndexOf(",")==temp.length()-1){
-			sb.deleteCharAt(sb.lastIndexOf(","));
-		}
-		if(temp2.lastIndexOf(",")==temp2.length()-1){
-			sb2.deleteCharAt(sb2.lastIndexOf(","));
+			}
+
+			String temp = sb.toString().trim();
+			String temp2 = sb2.toString().trim();
+			if (temp.lastIndexOf(",") == temp.length() - 1) {
+				sb.deleteCharAt(sb.lastIndexOf(","));
+			}
+			if (temp2.lastIndexOf(",") == temp2.length() - 1) {
+				sb2.deleteCharAt(sb2.lastIndexOf(","));
+			}
 		}
 
 		element.setText("INSERT INTO "+
@@ -167,7 +179,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 	}
 
 	private void addQueryListPaingElement(Element root,Table table) {
-		Element element=root.addElement("SELECT");
+		Element element=root.addElement("select");
 		element.addAttribute("id",table.getTableConfiguration().getQueryPageableListSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
@@ -184,7 +196,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 	}
 
 	private void addQueryListElement(Element root,Table table) {
-		Element element=root.addElement("SELECT");
+		Element element=root.addElement("select");
 		element.addAttribute("id",table.getTableConfiguration().getQueryListSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
@@ -200,7 +212,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 	}
 
 	private void addSelectUsingIdElement(Element root,Table table) {
-		Element element=root.addElement("SELECT");
+		Element element=root.addElement("select");
 		element.addAttribute("id",table.getTableConfiguration().getSelectUsingIdSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,"long");
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
@@ -252,27 +264,34 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 				"</isNotEmpty>\n" +
 				"</dynamic>");
 
+
 	}
 
 	private void addColumnsElement(Element root,Table table) {
 		Element element =root.addElement("sql");
 		element.addAttribute("id","all_columns");
 		StringBuilder sb =new StringBuilder();
-		for(Column column:table.getColumnList()){
-			sb.append(column.getPrefix());
-			sb.append(column.getColumnName());
-			sb.append(" ");
-			sb.append(column.getFieldName());
-			sb.append(",");
-			sb.append("\n");
-		}
+		if(table.getColumnList()!=null&&table.getColumnList().size()!=0) {
+			for (Column column : table.getColumnList()) {
 
-		String temp=sb.toString().trim();
+				sb.append("\n");
+				sb.append("\t\t");
+				sb.append(column.getPrefix());
+				sb.append(column.getColumnName());
+				sb.append(" ");
+				sb.append(column.getFieldName());
+				sb.append(",");
 
-		if(temp.lastIndexOf(",")==temp.length()-1){
-			sb.deleteCharAt(sb.lastIndexOf(","));
+			}
+
+
+			String temp = sb.toString().trim();
+
+			if (temp.lastIndexOf(",") == temp.length() - 1) {
+				sb.deleteCharAt(sb.lastIndexOf(","));
+			}
+			element.setText(sb.toString());
 		}
-		element.setText(sb.toString());
 
 	}
 
@@ -281,13 +300,5 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		document.addDocType("sqlmap","-//ibatis.apache.org//DTD SQL Map 2.0//EN\" \"http://ibatis.apache.org/dtd/sql-map-2.dtd","");
 		return document;
 	}
-	/**
-	 * element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
-	 element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
-	 element.setText("SELECT \n"+
-	 "<include refid=\"all_cloumns\"" +
-	 "FROM \n"+
-	 table.getTableConfiguration().getTableName()+"\n"+
-	 "<include refid=\"pageCondition\"");
-	 */
+
 }

@@ -38,6 +38,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 		for (Table table : context.getTables()) {
 			JavaClass javaClass = new JavaClass();
 			javaClassList.add(javaClass);
+
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDomainPackageName()));
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setClassName(table.getTableConfiguration().getClassName());
@@ -58,6 +59,8 @@ public class POJOGenerator extends AbstractMethodGenerator{
 				methods.add(getJavaBeanGetter(field));
 				methods.add(getJavaBeanSetter(field));
 			}
+			// 将JavaClass 作为一种新的 Java类型 存到内存中
+			JavaType.addJavaType(javaClass);
 			genExtraJavaClass(javaClassList,table);
 		}
 		return javaClassList;
@@ -70,6 +73,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 		javaClass.setVisibility(JavaVisibility.PUBLIC);
 		javaClass.setClassName(table.getTableConfiguration().getClassName()+"Query");
 		javaClass.setSuperClass("Pagination<"+table.getTableConfiguration().getClassName()+">");
+		JavaType.addJavaType(javaClass);
 	}
 
 	public Method getJavaBeanGetter(Field field) {

@@ -56,9 +56,8 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 			javaClass.addInterface(interFace);
 			javaClass.setSuperClass(table.getTableConfiguration().getServiceSuperClassName());
 			Field field=new Field(JavaVisibility.PRIVATE,
-					table.getTableConfiguration().getDomainObjectName()+
-							table.getTableConfiguration().getDaoSuffix(),
-					new JavaType(table.getTableConfiguration().getDaoName()));
+					table.getTableConfiguration().getDaoName(),
+					JavaType.getJavaType(table.getTableConfiguration().getDaoName(),javaClass.getImportedSet()));
 			field.addAnnotation("@Autowired");
 			javaClass.addField(field);
 
@@ -83,9 +82,7 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getDeleteObjectSqlId());
 		method.addParameter(
-				new Parameter(
-						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+				new Parameter("id",JavaType.longInstance));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -110,7 +107,9 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
+						)));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -134,7 +133,9 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
+						)));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -155,11 +156,13 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
-		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
+		method.setMethodName(table.getTableConfiguration().getQueryListSqlId());
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
+						)));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -185,7 +188,9 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
+						)));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -206,7 +211,7 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		Method method=new Method();
 		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new JavaType(table.getTableConfiguration().getClassName()));
+		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName(),javaClass.getImportedSet()));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		StringBuilder sb =new StringBuilder();

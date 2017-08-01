@@ -16,6 +16,7 @@ public class Feature implements CodeMaker {
     private List<String> annotations;
 
     public Comment getComment() {
+
         return comment;
     }
 

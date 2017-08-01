@@ -51,6 +51,7 @@ public class Field extends Feature  {
         if(isFinal()){
             sb.append("final ");
         }
+
         sb.append(getJavaType().getTypeName()+" ");
         sb.append(fieldName);
         sb.append(";");

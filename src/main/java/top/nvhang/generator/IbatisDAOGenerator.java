@@ -59,6 +59,8 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDaoImplPackageName()));
 			javaClass.addInterface(interFace);
 			javaClass.setSuperClass(table.getTableConfiguration().getDaoSuperClassName());
+			JavaType.addJavaType(javaClass);
+			JavaType.addJavaType(interFace);
 
 			addSelectObjectUsingIdMethod(javaClass,interFace,table);
 			addQueryPageableListMethod(javaClass,interFace,table);
@@ -100,7 +102,9 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
+						)));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
 				table.getTableConfiguration().getNameSpace(),
@@ -118,7 +122,9 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
+						)));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
 				table.getTableConfiguration().getNameSpace(),
@@ -133,10 +139,11 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
 		method.setMethodName(table.getTableConfiguration().getQueryListSqlId());
-		method.addParameter(
-				new Parameter(
-						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+		method.addParameter(new Parameter(
+				table.getTableConfiguration().getDomainObjectQueryName(),
+				JavaType.getJavaType(
+						table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
+				)));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
 				table.getTableConfiguration().getNameSpace(),
@@ -152,10 +159,11 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
-		method.addParameter(
-				new Parameter(
-						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+		method.addParameter(new Parameter(
+				table.getTableConfiguration().getDomainObjectQueryName(),
+				JavaType.getJavaType(
+						table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
+				)));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryListPagingTemplate(),
 				table.getTableConfiguration().getDomainObjectQueryName(),
@@ -171,7 +179,9 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 		Method method=new Method();
 		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new JavaType(table.getTableConfiguration().getClassName()));
+		method.setReturnType(JavaType.getJavaType(
+				table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
+		));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		method.setMethodBody(MessageFormat.format(

@@ -153,6 +153,9 @@ public class JavaClass extends Feature {
     		interfaceList=new ArrayList<Interface>();
 		}
 		interfaceList.add(interFace);
+		importedSet.add(new Imported(interFace.getJavaPackage().getPackageName()+
+				"."+
+				interFace.getInterFaceName()));
 	}
 	public void addField(Field field){
 		if(fields==null){

@@ -8,7 +8,7 @@ import top.nvhang.AutoG;
 public class Run {
 
 	public static void main (String args[]){
-		System.out.println(System.getProperty("user.dir"));
+
 
 		ApplicationContext context =new ClassPathXmlApplicationContext("application-config.xml");
 		AutoG autoG = (AutoG) context.getBean("autoG");

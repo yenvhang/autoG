@@ -17,13 +17,16 @@ public class Comment implements CodeMaker {
         sb.append("/**");
         sb.append("\n");
         sb.append(" *");
-        sb.append(comment);
+        sb.append(getComment());
         sb.append("\n");
         sb.append("*/");
         sb.append("\n");
         return sb.toString();
     }
     public String getComment() {
+        if(comment==null){
+            return "";
+        }
         return comment;
     }
 

@@ -29,7 +29,9 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
-						new JavaType(table.getTableConfiguration().getClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getClassName(),interFace.getImportedSet()
+						)));
 		method.setAbstract(true);
 	}
 	protected  void addAbstractInsertObjectMethod(Interface interFace, Table table){
@@ -53,7 +55,9 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getDomainObjectQueryClassName(),interFace.getImportedSet()
+						)));
 		method.setAbstract(true);
 	}
 	protected  void addAbstractQueryPageableListMethod(Interface interFace,Table table){
@@ -65,7 +69,9 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
-						new JavaType(table.getTableConfiguration().getDomainObjectQueryClassName())));
+						JavaType.getJavaType(
+								table.getTableConfiguration().getDomainObjectQueryClassName(),interFace.getImportedSet()
+						)));
 		method.setAbstract(true);
 	}
 
@@ -73,7 +79,7 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 		Method method =new Method();
 		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
-		method.setReturnType(new JavaType(table.getTableConfiguration().getClassName()));
+		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName(),interFace.getImportedSet()));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		method.setAbstract(true);
