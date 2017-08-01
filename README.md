@@ -37,29 +37,30 @@
 
 
 ## Usages
-配置config.yaml  与autoG.jar 放在同一目录上  
-example   
+配置config.yaml  与autoG.jar 放在同一目录上  
+命令行运行 java -jar autoG.jar
+### Example
 driverClassName: oracle.jdbc.OracleDriver  
 user: username  
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
-tableConfigurationList:  
-  \- tableName: INTENTION_TRADER  
-    domainPackageName: top.nvhang  
-    domainQueryPackageName: top.nvhang.query   
-    daoPackageName: top.nvhang.dao  
-    daoImplPackageName: top.nvhang.dao.daoImpl  
-    managerPackageName: top.nvhang.manage  
-    managerImplPackageName: top.nvhang.manage.managerImpl  
-    sqlMapPath: top.nvhang  
+tableConfigurationList:  
+  \- tableName: INTENTION_TRADER  
+     domainPackageName: top.nvhang  
+     domainQueryPackageName: top.nvhang.query   
+     daoPackageName: top.nvhang.dao  
+     daoImplPackageName: top.nvhang.dao.daoImpl  
+     managerPackageName: top.nvhang.manage  
+     managerImplPackageName: top.nvhang.manage.managerImpl  
+     sqlMapPath: top.nvhang  
   \- tableName: STOCK_A_QUOTA  
-    domainPackageName: top.nvhang  
-    domainQueryPackageName: top.nvhang.query  
-    daoPackageName: top.nvhang.stockAquota  
-    daoImplPackageName: top.nvhang.manage  
-    managerPackageName: top.nvhang.manage.managerImpl  
-    managerImplPackageName: top.nvhang  
-    sqlMapPath: top.nvhang   
+     domainPackageName: top.nvhang  
+     domainQueryPackageName: top.nvhang.query  
+     daoPackageName: top.nvhang.stockAquota  
+     daoImplPackageName: top.nvhang.manage  
+     managerPackageName: top.nvhang.manage.managerImpl  
+     managerImplPackageName: top.nvhang  
+     sqlMapPath: top.nvhang   
 
 
 
