@@ -9,6 +9,33 @@
 脑袋好疼。  
 有空再整理整理  
 
+##tableConfiguration  
+
+#daoPackageName not null  
+#daoPackageName not null  
+#daoImplPackageName not null  
+#managerPackageName not null  
+#managerImplPackageName not null  
+#sqlMapPath not null  
+#nameSpace default className  
+#mapperName default domainObjectName+mapperSuffix+".xml"  
+#daoSuperClassName default "SqlMapClientDaoSupport"  
+#managerSuperClassName default ""  
+#managerName default className+managerSuffix  
+#managerImplName default className+managerImplSuffix  
+#daoImplName default className+daoSuffix  
+#daoImplName className+daoImplSuffix  
+  
+
+#selectUsingIdSqlId default "select"+className+"UsingId"  
+#queryListSqlId default "query"+className+"List"  
+#queryPageableListSqlId default "queryPageableList"  
+#insertObjectSqlId default "insert"+className  
+#updateObjectSqlId default "update"+className  
+#deleteObjectSqlId default "delete"+className  
+#selectCountSqlId  default "selectCount"  
+
+
 ## Usages
 配置config.yaml  与autoG.jar 放在同一目录上  
 example   
@@ -17,36 +44,26 @@ user: username
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
 tableConfigurationList:  
-  \- tableName: INTENTION_TRADER         #tableConfiguration 
-    daoPackageName: top.test  
-    managerPackageName: top.test  
-    daoImplPackageName: top.test  
-    managerImplPackageName: top.test  
-    ibatisPackageName: top.test  
-  \- tableName: STOCK_A_QUOTA            #tableConfiguration  
-    daoPackageName: top.test2  
-    managerPackageName: top.test2  
-    daoImplPackageName: top.test2  
-    managerImplPackageName: top.test2  
-    ibatisPackageName: top.test2  
+  \- tableName: INTENTION_TRADER  
+    domainPackageName: top.nvhang  
+    domainQueryPackageName: top.nvhang.query   
+    daoPackageName: top.nvhang.dao  
+    daoImplPackageName: top.nvhang.dao.daoImpl  
+    managerPackageName: top.nvhang.manage  
+    managerImplPackageName: top.nvhang.manage.managerImpl  
+    sqlMapPath: top.nvhang  
+  \- tableName: STOCK_A_QUOTA  
+    domainPackageName: top.nvhang  
+    domainQueryPackageName: top.nvhang.query  
+    daoPackageName: top.nvhang.stockAquota  
+    daoImplPackageName: top.nvhang.manage  
+    managerPackageName: top.nvhang.manage.managerImpl  
+    managerImplPackageName: top.nvhang  
+    sqlMapPath: top.nvhang   
 
 
-#all tableConfiguration property  
-daoPackageName  
-managerPackageName  
-daoImplPackageName  
-managerImplPackageName  
-ibatisPackageName  
-targetPath  
-daoSuperClassName  
-serviceSuperClassName  
-selectUsingIdSqlId  
-queryListSqlId  
-queryPageableListSqlId  
-insertObjectSqlId  
-updateObjectSqlId  
-deleteObjectSqlId  
-selectCountSqlId  
+
+
 
 
 
