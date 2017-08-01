@@ -45,24 +45,22 @@ user: username
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
 tableConfigurationList:  
-\- tableName: INTENTION_TRADER  
-domainPackageName: top.nvhang  
-domainQueryPackageName: top.nvhang.query  
-daoPackageName: top.nvhang.dao  
-daoImplPackageName: top.nvhang.dao.daoImpl   
-managerPackageName: top.nvhang.manage  
-managerImplPackageName: top.nvhang.manage.managerImpl  
-sqlMapPath: top.nvhang  
-\- tableName: STOCK_A_QUOTA  
-domainPackageName: top.nvhang  
-domainQueryPackageName: top.nvhang.query  
-daoPackageName: top.nvhang.stockAquota  
-daoImplPackageName: top.nvhang.manage  
-managerPackageName: top.nvhang.manage.managerImpl    
-managerImplPackageName: top.nvhang  
-sqlMapPath: top.nvhang  
-
-
+  \- tableName: INTENTION_TRADER  
+    domainPackageName: top.nvhang.domain  
+    domainQueryPackageName: top.nvhang.domain.query  
+    daoPackageName: top.nvhang.dao  
+    daoImplPackageName: top.nvhang.dao.daoImpl  
+    managerPackageName: top.nvhang.manage  
+    managerImplPackageName: top.nvhang.manage.managerImpl  
+    sqlMapPath: top.nvhang  
+  \- tableName: STOCK_A_QUOTA  
+    domainPackageName: top.nvhang.domain  
+    domainQueryPackageName: top.nvhang.domain.query  
+    daoPackageName: top.nvhang.dao  
+    daoImplPackageName: top.nvhang.daoImpl  
+    managerPackageName: top.nvhang.manage  
+    managerImplPackageName: top.nvhang.manage.managerImpl  
+    sqlMapPath: top.nvhang  
 
 
 
