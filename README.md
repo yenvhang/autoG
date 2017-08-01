@@ -62,7 +62,7 @@ tableConfigurationList:
     managerImplPackageName: top.nvhang.manage.managerImpl  
     sqlMapPath: top.nvhang  
 
-
+![](pic/pojo.png) 
 
 
 
