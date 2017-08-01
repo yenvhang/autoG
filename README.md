@@ -9,7 +9,7 @@
 脑袋好疼。  
 有空再整理整理  
 
-##tableConfiguration  
+## tableConfiguration
 
 #daoPackageName not null  
 #daoPackageName not null  
