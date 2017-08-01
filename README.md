@@ -39,12 +39,12 @@
 ## Usages
 配置config.yaml  与autoG.jar 放在同一目录上  
 命令行运行 java -jar autoG.jar
-### Example
-driverClassName: oracle.jdbc.OracleDriver  
+### Sample  
+driverClassName: oracle.jdbc.OracleDriver  
 user: username  
 password: password  
 url: jdbc:oracle:thin:@127.0.0.1:1521:dev  
-tableConfigurationList:  
+tableConfigurationList:  
   \- tableName: INTENTION_TRADER  
      domainPackageName: top.nvhang  
      domainQueryPackageName: top.nvhang.query   
