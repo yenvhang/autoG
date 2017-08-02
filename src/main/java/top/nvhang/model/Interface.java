@@ -1,5 +1,6 @@
 package top.nvhang.model;
 
+import org.apache.commons.lang3.StringUtils;
 import top.nvhang.core.CodeMaker;
 
 import java.util.ArrayList;
@@ -87,5 +88,16 @@ public class Interface implements CodeMaker{
 			methods=new ArrayList<Method>();
 		}
 		methods.add(method);
+		addImported(method.getReturnType().getImported());
+		if(method.getParameters()!=null){
+			for(Parameter parameter:method.getParameters()){
+				addImported(parameter.getType().getImported());
+			}
+		}
+	}
+	private void addImported(Imported imported){
+		if(imported!=null&& StringUtils.isNotBlank(imported.getFormattedContent())){
+			importedSet.add(imported);
+		}
 	}
 }

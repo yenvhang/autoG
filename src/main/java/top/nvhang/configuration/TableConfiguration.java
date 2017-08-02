@@ -31,7 +31,7 @@ public class TableConfiguration {
 	private String managerImplPackageName;
 
 	private String sqlMapPath;
-	private String daoSuperClassName="SqlMapClientDaoSupport";
+	private String daoSuperClassName="BaseDaoForStockiBatis";
 	private String managerSuperClassName="";
 
 	private String selectUsingIdSqlId;
@@ -336,7 +336,7 @@ public class TableConfiguration {
 
 	public String getMapperName() {
 		if(StringUtils.isBlank(mapperName)){
-			return getDomainObjectName()+getMapperSuffix()+".xml";
+			return getClassName()+getMapperSuffix()+".xml";
 		}
 		return mapperName;
 	}

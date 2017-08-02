@@ -102,4 +102,10 @@ public class BaseUtil {
 		return projectPath+File.separator+packageName.replaceAll("\\.","\\"+File.separator);
 
 	}
+
+	public static String makeFirstCharToLowCase(String value){
+		StringBuilder sb=new StringBuilder(value);
+		sb.replace(0,1, String.valueOf(Character.toLowerCase(sb.charAt(0))));
+		return sb.toString();
+	}
 }

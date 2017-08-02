@@ -3,7 +3,9 @@ package top.nvhang.model;
 import top.nvhang.core.CodeMaker;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by creep on 2017/7/9.
@@ -14,7 +16,7 @@ public class Feature implements CodeMaker {
     private JavaVisibility visibility = JavaVisibility.DEFAULT;
     private Comment comment;
     private List<String> annotations;
-
+    protected Set<Imported> importedSet=new HashSet<Imported>();
     public Comment getComment() {
 
         return comment;
@@ -71,10 +73,13 @@ public class Feature implements CodeMaker {
         return sb.toString();
     }
 
-    public void addAnnotation(String annotation){
+    public void addAnnotation(String annotation,Set<Imported> importedSet){
         if(annotations==null){
             annotations=new ArrayList<String>();
         }
         annotations.add(annotation);
+        if("@Autowired".equals(annotation)){
+            importedSet.add(new Imported("org.springframework.beans.factory.annotation.Autowired;"));
+        }
     }
 }

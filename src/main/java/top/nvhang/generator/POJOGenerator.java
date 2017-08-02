@@ -43,13 +43,13 @@ public class POJOGenerator extends AbstractMethodGenerator{
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setClassName(table.getTableConfiguration().getClassName());
 			javaClass.setComment(new Comment(table.getComment()));
-			List<Field> fields = new ArrayList<Field>();
-			javaClass.setFields(fields);
+
+
 			//加入字段
 			for (Column column : table.getColumnList()) {
-				fields.add(new Field(column.getComment(),
+				javaClass.addField(new Field(column.getComment(),
 						JavaVisibility.PRIVATE,
-						JavaType.getJavaType(column.getColumnType(),column.getColumnLength(),javaClass.getImportedSet()),
+						JavaType.getJavaType(column.getColumnType(),column.getColumnLength()),
 						column.getFieldName()));
 			}
 			//加入get set 方法
@@ -72,7 +72,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 		javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDomainQueryObjectPackageName()));
 		javaClass.setVisibility(JavaVisibility.PUBLIC);
 		javaClass.setClassName(table.getTableConfiguration().getClassName()+"Query");
-		javaClass.setSuperClass("Pagination<"+table.getTableConfiguration().getClassName()+">");
+		javaClass.setSuperClass(new JavaType("Pagination<"+table.getTableConfiguration().getClassName()+">",null));
 		JavaType.addJavaType(javaClass);
 	}
 

@@ -96,11 +96,11 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		element.addAttribute("id",table.getTableConfiguration().getSelectCountSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
-		element.setText("SELECT COUNT(1) \n"+
+		element.setText("\nSELECT COUNT(1) \n"+
 				"FROM \n"+
 				table.getTableConfiguration().getTableName()+"\n"+
 				"<include refid=\"pageCondition\" />");
-
+		root.addText("\n");
 
 
 	}
@@ -109,13 +109,15 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		Element root =document.addElement("sqlMap");
 		root.addAttribute("namespace",table.getTableName());
 		document.setRootElement(root);
+
 	}
 
 	private void addDeleteElement(Element root,Table table) {
 		Element element=root.addElement("delete");
 		element.addAttribute("id",table.getTableConfiguration().getDeleteObjectSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,"long");
-		element.setText("DELETE FROM "+table.getTableConfiguration().getTableName()+" WHERE ID="+"#id#");
+		element.setText("\n\t\tDELETE FROM "+table.getTableConfiguration().getTableName()+" WHERE ID="+"#id#");
+		root.addText("\n");
 	}
 
 	private void addUpdateElement(Element root,Table table) {
@@ -124,6 +126,8 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 		StringBuilder sb =new StringBuilder();
 		for(Column column:table.getColumnList()){
+			sb.append("\n");
+			sb.append("\t\t");
 			if(column.getFieldName().equals("id")){
 				continue;
 			}
@@ -131,12 +135,14 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 					column.getColumnName()+"=#"+column.getFieldName()+"#"+
 					"</isNotNull>");
 		}
-		element.setText("UPDATE  "+table.getTableConfiguration().getTableName()+
+		element.addText("\n");
+		element.addText("UPDATE  "+table.getTableConfiguration().getTableName()+
 			"<dynamic prepend=\"SET\">"+
 			sb.toString()+
 			"</dynamic>");
 		element.addText("\n");
 		element.addText("WHERE ID=#id#");
+		root.addText("\n");
 	}
 
 	private void addInsertElement(Element root,Table table) {
@@ -167,15 +173,16 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 				sb2.deleteCharAt(sb2.lastIndexOf(","));
 			}
 		}
-
-		element.setText("INSERT INTO "+
+		element.addText("\n\t\t");
+		element.addText("INSERT INTO "+
 		table.getTableConfiguration().getClassName()+
 		"(" +
 			sb.toString()+
-		")"+
+		")"+"\n\t\t"+
 				"VALUES(" +
 				sb2.toString()+
 				")");
+		root.addText("\n");
 	}
 
 	private void addQueryListPaingElement(Element root,Table table) {
@@ -183,16 +190,19 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		element.addAttribute("id",table.getTableConfiguration().getQueryPageableListSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
-		element.addText("<include refid=\"pageBeginSql\"/>");
-		element.addText("SELECT <include refid=\"all_columns\"/>"+
-		"FROM "+
-		table.getTableConfiguration().getTableName()+
-		"<dynamic prepend=\"WHERE\">\n" +
+		element.addText("\n<include refid=\"pageBeginSql\"/>");
+		element.addText("\n");
+		element.addText("\t\t");
+		element.addText("SELECT <include refid=\"all_columns\"/>"+"\n\t\t"+
+		"FROM "+"\n\t\t"+
+		table.getTableConfiguration().getTableName()+"\n\t\t"+
+		"<dynamic prepend=\"WHERE\">" +"\n\t\t"+
 
 				"<isNotEmpty property=\"\" prepend=\"AND\"> " +
 				"</isNotEmpty>" +
 				"</dynamic>");
 		element.addText("<include refid=\"pageEndSql\"/>");
+		root.addText("\n");
 	}
 
 	private void addQueryListElement(Element root,Table table) {
@@ -201,14 +211,15 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		element.addAttribute(PARAMETER_CLASS_ATR,table.getTableConfiguration().getDomainObjectQueryName());
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
 
-		element.addText("SELECT <include refid=\"all_columns\"/>"+
-				"FROM "+
-				table.getTableConfiguration().getTableName()+
-				"<dynamic prepend=\"WHERE\">\n" +
+		element.addText("\nSELECT <include refid=\"all_columns\"/>"+"\n"+
+				"FROM "+"\n"+
+				table.getTableConfiguration().getTableName()+"\n"+
+				"<dynamic prepend=\"WHERE\">" +"\n"+
 
 				"<isNotEmpty property=\"\" prepend=\"AND\"> \n" +
 				"</isNotEmpty>" +
 				"</dynamic>");
+		root.addText("\n");
 	}
 
 	private void addSelectUsingIdElement(Element root,Table table) {
@@ -216,13 +227,14 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 		element.addAttribute("id",table.getTableConfiguration().getSelectUsingIdSqlId());
 		element.addAttribute(PARAMETER_CLASS_ATR,"long");
 		element.addAttribute(RESULT_CLASS_ATR,table.getTableConfiguration().getDomainObjectName());
+		element.addText("\n");
 		element.setText("SELECT \n"+
-				"<include refid=\"all_columns\"/>" +
+				"<include refid=\"all_columns\"/>\n" +
 				"FROM \n"+
 				table.getTableConfiguration().getTableName()+"\n"+
 				"WHERE \n"+
 				"ID=#id#");
-
+		root.addText("\n");
 	}
 
 	private void addResultMapElement(Element root,Table table) {
@@ -264,7 +276,7 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 				"</isNotEmpty>\n" +
 				"</dynamic>");
 
-
+		root.addText("\n");
 	}
 
 	private void addColumnsElement(Element root,Table table) {
@@ -292,12 +304,14 @@ public class SqlMapGenerator extends AbstractFileGenerator {
 			}
 			element.setText(sb.toString());
 		}
+		root.addText("\n");
+
 
 	}
 
 	public Document getBaseDocument(){
 		Document document = DocumentHelper.createDocument();
-		document.addDocType("sqlmap","-//ibatis.apache.org//DTD SQL Map 2.0//EN\" \"http://ibatis.apache.org/dtd/sql-map-2.dtd","");
+		document.addDocType("sqlMap","-//ibatis.apache.org//DTD SQL Map 2.0//EN\" \"http://ibatis.apache.org/dtd/sql-map-2.dtd","");
 		return document;
 	}
 

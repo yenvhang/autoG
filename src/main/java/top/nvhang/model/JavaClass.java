@@ -15,12 +15,11 @@ public class JavaClass extends Feature {
 
     private List<Field> fields;
 	private List<Method> methods;
-	private Set<Imported> importedSet=new HashSet<Imported>();
-	private String superClass;
+
 	private List<Interface> interfaceList;
 	private JavaPackage javaPackage;
 	private String className;
-
+	private JavaType superClass;
 
 	public List<Interface> getInterfaceList() {
 		return interfaceList;
@@ -70,13 +69,11 @@ public class JavaClass extends Feature {
         this.className = className;
     }
 
-    public String getSuperClass() {
+    public JavaType getSuperClass() {
         return superClass;
     }
 
-    public void setSuperClass(String superClass) {
-        this.superClass = superClass;
-    }
+
 	@Override
     public String getFormattedContent() {
         StringBuffer sb =new StringBuffer();
@@ -88,9 +85,9 @@ public class JavaClass extends Feature {
         // µ¼°ü
         if(importedSet!=null&&importedSet.size()!=0){
             for (Imported imported:importedSet) {
-                sb.append(imported.getFormattedContent());
-                sb.append("\n");
-            }
+				sb.append(imported.getFormattedContent());
+				sb.append("\n");
+			}
         }
         sb.append(super.getFormattedContent());
 
@@ -104,8 +101,8 @@ public class JavaClass extends Feature {
         }
         sb.append("class ");
         sb.append(className);
-        if(StringUtils.isNotBlank(superClass)){
-            sb.append(" extends " +superClass);
+        if(superClass!=null){
+            sb.append(" extends " +superClass.getTypeName());
         }
         if(interfaceList!=null&&interfaceList.size()!=0){
         	sb.append(" implements ");
@@ -147,6 +144,13 @@ public class JavaClass extends Feature {
 			methods=new ArrayList<Method>();
 		}
 		methods.add(method);
+		addImported(method.getReturnType().getImported());
+		if(method.getParameters()!=null){
+			for(Parameter parameter:method.getParameters()){
+				addImported(parameter.getType().getImported());
+			}
+		}
+
 	}
 	public void addInterface(Interface interFace){
     	if(interfaceList==null){
@@ -156,11 +160,29 @@ public class JavaClass extends Feature {
 		importedSet.add(new Imported(interFace.getJavaPackage().getPackageName()+
 				"."+
 				interFace.getInterFaceName()));
+
+	}
+
+	public void setSuperClass(JavaType superClass) {
+		if(superClass!=null){
+			addImported(superClass.getImported());
+		}
+
+		this.superClass = superClass;
 	}
 	public void addField(Field field){
 		if(fields==null){
 			fields=new ArrayList<Field>();
 		}
 		fields.add(field);
+		if(field.getJavaType().getImported()!=null){
+			addImported(field.getJavaType().getImported());
+		}
+
+	}
+	private void addImported(Imported imported){
+		if(imported!=null&&StringUtils.isNotBlank(imported.getImportValue())){
+			importedSet.add(imported);
+		}
 	}
 }

@@ -1,6 +1,5 @@
 package top.nvhang.generator;
 
-import org.omg.IOP.TAG_ALTERNATE_IIOP_ADDRESS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
@@ -54,11 +53,11 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getManagerImplPackageName()));
 			javaClass.addInterface(interFace);
-			javaClass.setSuperClass(table.getTableConfiguration().getServiceSuperClassName());
+			javaClass.setSuperClass(JavaType.getJavaType(table.getTableConfiguration().getServiceSuperClassName()));
 			Field field=new Field(JavaVisibility.PRIVATE,
-					table.getTableConfiguration().getDaoName(),
-					JavaType.getJavaType(table.getTableConfiguration().getDaoName(),javaClass.getImportedSet()));
-			field.addAnnotation("@Autowired");
+					BaseUtil.makeFirstCharToLowCase(table.getTableConfiguration().getDaoName()),
+					JavaType.getJavaType(table.getTableConfiguration().getDaoName()));
+			field.addAnnotation("@Autowired",javaClass.getImportedSet());
 			javaClass.addField(field);
 
 
@@ -77,7 +76,6 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 
 	private void addDeleteObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getDeleteObjectSqlId());
@@ -95,12 +93,12 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		sb.append(")");
 		method.setMethodBody(sb.toString());
 		addAbstractDeleteObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 
 	}
 
 	private void addUpdateObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getUpdateObjectSqlId());
@@ -108,8 +106,7 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getClassName())));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -122,11 +119,11 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		sb.append(")");
 		method.setMethodBody(sb.toString());
 		addAbstractUpdateObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 
 	private void addInsertObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getInsertObjectSqlId());
@@ -134,8 +131,7 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getClassName())));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -148,40 +144,39 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		sb.append(")");
 		method.setMethodBody(sb.toString());
 		addAbstractInsertObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 
 	private void addQueryListMethod(JavaClass javaClass, Interface interFace, Table table) {
 
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
+		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">",
+				new Imported("java.util.List")));
 		method.setMethodName(table.getTableConfiguration().getQueryListSqlId());
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getDomainObjectQueryClassName())));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
 			sb.append(javaClass.getFields().get(0).getFieldName());
 		}
 		sb.append(".");
-		sb.append(table.getTableConfiguration().getQueryPageableListSqlId());
+		sb.append(table.getTableConfiguration().getQueryListSqlId());
 		sb.append("(");
 		sb.append(table.getTableConfiguration().getDomainObjectQueryName());
 		sb.append(")");
 		method.setMethodBody(sb.toString());
-
+		javaClass.addMethod(method);
 		addAbstractQueryListMethod(interFace,table);
 
 	}
 
 	private void addQueryPageableListMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
@@ -189,8 +184,7 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getDomainObjectQueryClassName())));
 
 		StringBuilder sb =new StringBuilder();
 		if(javaClass.getFields()!=null&&javaClass.getFields().size()==1){
@@ -202,16 +196,15 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		sb.append(table.getTableConfiguration().getDomainObjectQueryName());
 		sb.append(")");
 		method.setMethodBody(sb.toString());
-
+		javaClass.addMethod(method);
 		addAbstractQueryPageableListMethod(interFace,table);
 	}
 
 	private void addSelectObjectUsingIdMethod(JavaClass javaClass, Interface interFace, Table table) {
 
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName(),javaClass.getImportedSet()));
+		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName()));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		StringBuilder sb =new StringBuilder();
@@ -225,5 +218,6 @@ public class ManagerGenerator extends AbstractMethodGenerator implements Generat
 		sb.append(")");
 		method.setMethodBody(sb.toString());
 		addAbstractSelectObjectUsingIdMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 }

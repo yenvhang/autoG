@@ -9,7 +9,6 @@ import top.nvhang.model.db.Table;
 public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 	protected  void addAbstractDeleteObjectMethod(Interface interFace, Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getDeleteObjectSqlId());
@@ -18,11 +17,11 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 						"id",
 						JavaType.longInstance));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 
 	}
 	protected  void addAbstractUpdateObjectMethod(Interface interFace, Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getUpdateObjectSqlId());
@@ -30,13 +29,13 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getClassName(),interFace.getImportedSet()
+								table.getTableConfiguration().getClassName()
 						)));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 	}
 	protected  void addAbstractInsertObjectMethod(Interface interFace, Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getInsertObjectSqlId());
@@ -45,24 +44,24 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 						table.getTableConfiguration().getDomainObjectName(),
 						new JavaType(table.getTableConfiguration().getClassName())));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 	}
 	protected  void addAbstractQueryListMethod(Interface interFace, Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
-		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
+		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">",new Imported("java.util.List")));
 		method.setMethodName(table.getTableConfiguration().getQueryListSqlId());
 		method.addParameter(
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getDomainObjectQueryClassName(),interFace.getImportedSet()
+								table.getTableConfiguration().getDomainObjectQueryClassName()
 						)));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 	}
 	protected  void addAbstractQueryPageableListMethod(Interface interFace,Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
@@ -70,19 +69,20 @@ public abstract class AbstractMethodGenerator extends AbstractFileGenerator{
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectQueryName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getDomainObjectQueryClassName(),interFace.getImportedSet()
+								table.getTableConfiguration().getDomainObjectQueryClassName()
 						)));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 	}
 
 	protected  void addAbstractSelectObjectUsingIdMethod(Interface interFace,Table table){
 		Method method =new Method();
-		interFace.addMethod(method);
 		method.setVisibility(JavaVisibility.DEFAULT);
-		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName(),interFace.getImportedSet()));
+		method.setReturnType(JavaType.getJavaType(table.getTableConfiguration().getClassName()));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		method.setAbstract(true);
+		interFace.addMethod(method);
 
 
 	}

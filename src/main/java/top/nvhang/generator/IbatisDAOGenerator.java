@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
 import top.nvhang.model.*;
 import top.nvhang.model.db.Table;
-import top.nvhang.util.BaseUtil;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -58,9 +57,10 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 			javaClass.setVisibility(JavaVisibility.PUBLIC);
 			javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDaoImplPackageName()));
 			javaClass.addInterface(interFace);
-			javaClass.setSuperClass(table.getTableConfiguration().getDaoSuperClassName());
-			JavaType.addJavaType(javaClass);
 			JavaType.addJavaType(interFace);
+			javaClass.setSuperClass(new JavaType(table.getTableConfiguration().getDaoSuperClassName(),null));
+			JavaType.addJavaType(javaClass);
+
 
 			addSelectObjectUsingIdMethod(javaClass,interFace,table);
 			addQueryPageableListMethod(javaClass,interFace,table);
@@ -77,7 +77,6 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 
 	private void addDeleteObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getDeleteObjectSqlId());
@@ -91,11 +90,11 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				table.getTableConfiguration().getDeleteObjectSqlId(),
 				"id"));
 		addAbstractDeleteObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 
 	private void addUpdateObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getUpdateObjectSqlId());
@@ -103,19 +102,19 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getClassName())));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
 				table.getTableConfiguration().getNameSpace(),
 				table.getTableConfiguration().getUpdateObjectSqlId(),
 				table.getTableConfiguration().getDomainObjectName()));
 		addAbstractUpdateObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 
 	private void addInsertObjectMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
+
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getInsertObjectSqlId());
@@ -123,26 +122,26 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				new Parameter(
 						table.getTableConfiguration().getDomainObjectName(),
 						JavaType.getJavaType(
-								table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
-						)));
+								table.getTableConfiguration().getClassName())));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
 				table.getTableConfiguration().getNameSpace(),
 				table.getTableConfiguration().getInsertObjectSqlId(),
 				table.getTableConfiguration().getDomainObjectName()));
 	addAbstractInsertObjectMethod(interFace,table);
+		javaClass.addMethod(method);
 	}
 
 	private void addQueryListMethod(JavaClass javaClass, Interface interFace, Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
-		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">"));
+		method.setReturnType(new JavaType("List<"+table.getTableConfiguration().getClassName()+">",
+				new Imported("java.util.List")));
 		method.setMethodName(table.getTableConfiguration().getQueryListSqlId());
 		method.addParameter(new Parameter(
 				table.getTableConfiguration().getDomainObjectQueryName(),
 				JavaType.getJavaType(
-						table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
+						table.getTableConfiguration().getDomainObjectQueryClassName()
 				)));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryObjectTemplate(),
@@ -150,20 +149,20 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				table.getTableConfiguration().getQueryListSqlId(),
 				table.getTableConfiguration().getDomainObjectQueryName()));
 		addAbstractQueryListMethod(interFace,table);
+		javaClass.addMethod(method);
 
 	}
 
 	private void addQueryPageableListMethod(JavaClass javaClass, Interface interFace,Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.voidInstance);
 		method.setMethodName(table.getTableConfiguration().getQueryPageableListSqlId());
 		method.addParameter(new Parameter(
 				table.getTableConfiguration().getDomainObjectQueryName(),
 				JavaType.getJavaType(
-						table.getTableConfiguration().getDomainObjectQueryClassName(),javaClass.getImportedSet()
-				)));
+						table.getTableConfiguration().getDomainObjectQueryClassName())
+				));
 		method.setMethodBody(MessageFormat.format(
 				table.getTableConfiguration().getDaoTemplate().getQueryListPagingTemplate(),
 				table.getTableConfiguration().getDomainObjectQueryName(),
@@ -172,16 +171,14 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				table.getTableConfiguration().getNameSpace(),
 				table.getTableConfiguration().getQueryPageableListSqlId()));
 		addAbstractQueryPageableListMethod(interFace,table);
-
+		javaClass.addMethod(method);
 	}
 
 	private void addSelectObjectUsingIdMethod(JavaClass javaClass, Interface interFace,Table table) {
 		Method method=new Method();
-		javaClass.addMethod(method);
 		method.setVisibility(JavaVisibility.PUBLIC);
 		method.setReturnType(JavaType.getJavaType(
-				table.getTableConfiguration().getClassName(),javaClass.getImportedSet()
-		));
+				table.getTableConfiguration().getClassName()));
 		method.setMethodName(table.getTableConfiguration().getSelectUsingIdSqlId());
 		method.addParameter(new Parameter("id",JavaType.longInstance));
 		method.setMethodBody(MessageFormat.format(
@@ -189,6 +186,7 @@ public class IbatisDAOGenerator extends AbstractMethodGenerator implements Gener
 				table.getTableConfiguration().getNameSpace(),
 				table.getTableConfiguration().getSelectUsingIdSqlId(),
 				"id"));
+		javaClass.addMethod(method);
 		addAbstractSelectObjectUsingIdMethod(interFace,table);
 	}
 
