@@ -10,7 +10,7 @@ import java.util.Set;
 /**
  * Created by creep on 2017/7/9.
  */
-public class Feature implements CodeMaker {
+public class Feature implements CodeMaker{
     private boolean isStatic;
     private boolean isFinal;
     private JavaVisibility visibility = JavaVisibility.DEFAULT;
@@ -82,4 +82,6 @@ public class Feature implements CodeMaker {
             importedSet.add(new Imported("org.springframework.beans.factory.annotation.Autowired;"));
         }
     }
+
+
 }

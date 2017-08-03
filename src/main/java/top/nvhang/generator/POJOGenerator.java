@@ -1,5 +1,8 @@
 package top.nvhang.generator;
 
+import com.google.common.collect.Range;
+import com.google.googlejavaformat.java.Formatter;
+import com.google.googlejavaformat.java.FormatterException;
 import org.springframework.stereotype.Component;
 import top.nvhang.core.Context;
 import top.nvhang.model.db.Column;
@@ -24,6 +27,8 @@ public class POJOGenerator extends AbstractMethodGenerator{
 	public void generate() {
 		List<JavaClass> javaClassList =genJavaClass();
 		for(JavaClass javaClass:javaClassList){
+
+
 			output(javaClass.getFormattedContent(),
 					context.getConfig().getProjectPath(),
 					javaClass.getJavaPackage().getPackageName(),
@@ -68,6 +73,7 @@ public class POJOGenerator extends AbstractMethodGenerator{
 
 	private void genExtraJavaClass(List<JavaClass> javaClassList, Table table) {
 		JavaClass javaClass=new JavaClass();
+
 		javaClassList.add(javaClass);
 		javaClass.setJavaPackage(new JavaPackage(table.getTableConfiguration().getDomainQueryObjectPackageName()));
 		javaClass.setVisibility(JavaVisibility.PUBLIC);

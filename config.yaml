@@ -45,24 +45,24 @@
 #selectCountSqlId  default "selectCount"
 
 driverClassName: oracle.jdbc.OracleDriver
-user: takunghz_dev
-password: takunghz_dev
+user: forall_stock
+password: forall_stock
 url: jdbc:oracle:thin:@172.21.1.3:1521:dev
-projectPath: C:\Users\Administrator\Desktop\sample
+projectPath: D:\Application\A∞Ê“’ ı∆∑721\chengdudao\src
 tableConfigurationList:
-  - tableName: PROJECT_PLAN
-    domainPackageName: top.nvhang.domain
-    domainQueryPackageName: top.nvhang.domain.query
-    daoPackageName: top.nvhang.dao
-    daoImplPackageName: top.nvhang.dao.daoImpl
-    managerPackageName: top.nvhang.manage
-    managerImplPackageName: top.nvhang.manage.managerImpl
-    sqlMapPath: top.nvhang
-  - tableName: PROJECT
-    domainPackageName: top.nvhang.domain
-    domainQueryPackageName: top.nvhang.domain.query
-    daoPackageName: top.nvhang.dao
-    daoImplPackageName: top.nvhang.dao.daoImpl
-    managerPackageName: top.nvhang.manage
-    managerImplPackageName: top.nvhang.manage.managerImpl
-    sqlMapPath: top.nvhang
+  - tableName: INTENTION_TRADER
+    domainPackageName: com.hundsun.wudadao.chengdudao.domain.sample
+    domainQueryPackageName: com.hundsun.wudadao.chengdudao.domain.sample.query
+    daoPackageName: com.hundsun.wudadao.chengdudao.dao.sample
+    daoImplPackageName: com.hundsun.wudadao.chengdudao.dao.sample.ibatis
+    managerPackageName: com.hundsun.wudadao.chengdudao.manager.sample
+    managerImplPackageName: com.hundsun.wudadao.chengdudao.manager.sample.impl
+    sqlMapPath: com.hundsun.wudadao.chengdudao.domain.sample
+  - tableName: STOCK_A_QUOTA
+    domainPackageName: com.hundsun.wudadao.chengdudao.domain.sample
+    domainQueryPackageName: com.hundsun.wudadao.chengdudao.domain.sample.query
+    daoPackageName: com.hundsun.wudadao.chengdudao.dao.sample
+    daoImplPackageName: com.hundsun.wudadao.chengdudao.dao.sample.ibatis
+    managerPackageName: com.hundsun.wudadao.chengdudao.manager.sample
+    managerImplPackageName: com.hundsun.wudadao.chengdudao.manager.sample.impl
+    sqlMapPath: com.hundsun.wudadao.chengdudao.domain.sample

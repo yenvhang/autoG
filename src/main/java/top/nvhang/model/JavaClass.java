@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by creep on 2017/7/9.
  */
-public class JavaClass extends Feature {
+public class JavaClass extends Feature{
 
     private List<Field> fields;
 	private List<Method> methods;

@@ -33,13 +33,10 @@ public  class AutoG {
 	public void start(){
 
 		context.introspectTables();
-
 		pojoGenerator.generate();
 		sqlMapGenerator.generate();
 		ibatisDAOGenerator.generate();
 		managerGenerator.generate();
-
-
 	}
 
 	public Context getContext() {
