@@ -45,10 +45,10 @@
 #selectCountSqlId  default "selectCount"
 
 driverClassName: oracle.jdbc.OracleDriver
-user: forall_stock
-password: forall_stock
-url: jdbc:oracle:thin:@172.21.1.3:1521:dev
-projectPath: D:\Application\A∞Ê“’ ı∆∑721\chengdudao\src
+user: xxx
+password: xxx
+url: jdbc:oracle:thin:@127.0.0.1:xxx
+projectPath: D:\Application\xxx\xxx\src
 tableConfigurationList:
   - tableName: INTENTION_TRADER
     domainPackageName: com.hundsun.wudadao.chengdudao.domain.sample
